@@ -222,29 +222,22 @@ export interface Directory {
   id: string
   name: string
   slug: string
-  category: 'PROVINCIAL_OFFICE' | 'NATIONAL_AGENCY' | 'BARMM_AGENCY' | 'OTHER'
+  category: 'PROVINCIAL_OFFICE' | 'NATIONAL_AGENCY' | 'BARMM_MINISTRY' | 'LGU' | 'OTHER'
   
   // About
   description?: string
-  mission?: string
-  vision?: string
   
-  // Contact
-  email?: string
-  phone?: string
+  // Contact (required for display)
+  email: string
+  phone: string
   address?: string
   
   // Images
   logo?: string
-  coverImage?: string
   
-  // Head of Office
-  headProfileId?: string
+  // Head of Office / Officer
   headName?: string
   headTitle?: string
-  
-  // Services
-  services?: string[]
   
   // Office hours
   officeHours?: string
