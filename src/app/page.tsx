@@ -139,6 +139,9 @@ export default async function HomePage() {
               <Link href="/contact-us" className="px-4 py-2 text-sm font-medium text-white hover:bg-white/10 transition-colors">
                 CONTACT US
               </Link>
+              <Link href="/login" className="ml-2 px-4 py-2 text-sm font-medium text-primary bg-white rounded hover:bg-gray-100 transition-colors">
+                LOGIN
+              </Link>
             </nav>
 
             {/* Mobile Menu Button */}
