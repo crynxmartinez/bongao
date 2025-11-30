@@ -152,24 +152,78 @@ export default async function HomePage() {
         </div>
       </header>
 
-      {/* Hero Section */}
+      {/* Hero Section - Full Screen */}
       <section 
-        className="relative min-h-[500px] md:min-h-[600px] flex items-center justify-center text-white"
+        className="relative h-screen w-full flex items-center justify-center text-white overflow-hidden"
         style={{
-          backgroundImage: 'url(https://tawi-tawi.gov.ph/wp-content/uploads/2020/06/slider-1.jpg)',
+          backgroundImage: 'url(https://storage.googleapis.com/msgsndr/xzA6eU8kOYmBuwFdr3CF/media/692c3036aaad917619d94776.jpeg)',
           backgroundSize: 'cover',
-          backgroundPosition: 'center',
+          backgroundPosition: 'center top',
         }}
       >
-        <div className="absolute inset-0 bg-black/40" />
-        <div className="container mx-auto px-4 relative z-10 text-center">
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-4 tracking-wider">
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/40" />
+        
+        {/* Philippine Flag Logo - Top Center */}
+        <div className="absolute top-8 left-1/2 -translate-x-1/2 z-20">
+          <Image 
+            src="https://storage.googleapis.com/msgsndr/xzA6eU8kOYmBuwFdr3CF/media/692c303f82f4c581fb1bb2f9.png"
+            alt="Philippine Flag"
+            width={60}
+            height={40}
+            className="w-auto h-10"
+          />
+        </div>
+
+        {/* Main Content */}
+        <div className="relative z-10 text-center">
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-2 tracking-wider drop-shadow-lg" style={{ fontStyle: 'italic' }}>
             TAWI-TAWI
           </h1>
-          <p className="text-xl md:text-2xl mb-8 max-w-2xl mx-auto">
-            The Southernmost Province of the Philippines
+          <p className="text-2xl md:text-3xl lg:text-4xl font-light tracking-widest drop-shadow-lg">
+            TO THE WORLD
           </p>
-          <p className="text-lg italic">Gobyernong kaSali ang lahat</p>
+        </div>
+
+        {/* Provincial Seal - Center Bottom */}
+        <div className="absolute bottom-32 left-1/2 -translate-x-1/2 z-10">
+          <Image 
+            src="https://storage.googleapis.com/msgsndr/xzA6eU8kOYmBuwFdr3CF/media/692c2fb282f4c5268e1baafe.png"
+            alt="Tawi-Tawi Provincial Seal"
+            width={100}
+            height={100}
+            className="w-20 h-20 md:w-24 md:h-24"
+          />
+        </div>
+
+        {/* Governor - Left Side */}
+        <div className="absolute bottom-0 left-0 md:left-10 lg:left-20 z-10">
+          <div className="relative">
+            <Image 
+              src="https://storage.googleapis.com/msgsndr/xzA6eU8kOYmBuwFdr3CF/media/692c2faf82f4c5c37d1baacc.png"
+              alt="Governor and Vice Governor"
+              width={1000}
+              height={600}
+              className="w-full max-w-[1000px] h-auto object-contain"
+              style={{ maxHeight: '70vh' }}
+            />
+          </div>
+        </div>
+
+        {/* Governor & Vice Governor Labels */}
+        <div className="absolute bottom-8 left-0 right-0 z-20">
+          <div className="container mx-auto px-4">
+            <div className="flex justify-between items-end">
+              <div className="text-center ml-4 md:ml-20 lg:ml-32">
+                <h3 className="text-xl md:text-2xl font-bold text-yellow-400 drop-shadow-lg">YSHMAEL &quot;MANG&quot; I. SALI</h3>
+                <p className="text-white text-sm md:text-base">Governor</p>
+              </div>
+              <div className="text-center mr-4 md:mr-20 lg:mr-32">
+                <h3 className="text-xl md:text-2xl font-bold text-yellow-400 drop-shadow-lg">AL-SYED A. SALI</h3>
+                <p className="text-white text-sm md:text-base">Vice Governor</p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 

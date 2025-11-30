@@ -14,6 +14,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'tawi-tawi.gov.ph',
       },
+      {
+        protocol: 'https',
+        hostname: 'storage.googleapis.com',
+      },
     ],
   },
   // Enable experimental features for better performance
