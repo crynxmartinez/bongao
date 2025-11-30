@@ -181,7 +181,7 @@ export default async function HomePage() {
             width={1920}
             height={800}
             className="w-full h-auto object-contain object-bottom"
-            style={{ maxHeight: '55vh' }}
+            style={{ maxHeight: '75vh' }}
             priority
           />
         </div>
