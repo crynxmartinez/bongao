@@ -61,8 +61,8 @@ export default async function HomePage() {
   }
   return (
     <div className="min-h-screen">
-      {/* Top Bar */}
-      <div className="bg-primary text-white text-sm py-2">
+      {/* Top Bar - Black */}
+      <div className="bg-black text-white text-sm py-2">
         <div className="container mx-auto px-4 flex flex-wrap justify-between items-center gap-2">
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1">
@@ -158,8 +158,8 @@ export default async function HomePage() {
           backgroundPosition: 'center',
         }}
       >
-        {/* Dark Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/60" />
+        {/* Yellow-Green Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-yellow-400/30 via-green-500/20 to-green-700/50" />
         
         {/* Main Content - Centered Text */}
         <div className="relative z-10 text-center -mt-20">
