@@ -98,10 +98,6 @@ export default async function HomePage() {
             
             {/* Desktop Navigation */}
             <nav className="hidden lg:flex items-center gap-1">
-              <Link href="/" className="px-4 py-2 text-sm font-medium text-white border border-white rounded hover:bg-white/10 transition-colors">
-                HOME
-              </Link>
-              
               {/* Province Dropdown */}
               <div className="relative group">
                 <button className="px-4 py-2 text-sm font-medium text-white hover:bg-white/10 transition-colors flex items-center gap-1">
