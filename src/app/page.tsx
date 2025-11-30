@@ -159,8 +159,8 @@ export default async function HomePage() {
           backgroundPosition: 'center',
         }}
       >
-        {/* Yellow-Green Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-yellow-400/30 via-green-500/20 to-green-700/50" />
+        {/* Yellow-Green Gradient Overlay - Darker */}
+        <div className="absolute inset-0 bg-gradient-to-b from-yellow-400/40 via-green-600/40 to-green-900/70" />
         
         {/* Main Content - Centered Text */}
         <div className="relative z-10 text-center -mt-20">
