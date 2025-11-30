@@ -136,22 +136,18 @@
   }
 }
 
-/* Typewriter animation */
+/* Typewriter animation using clip-path */
 .typewriter {
   display: inline-block;
-  overflow: hidden;
   white-space: nowrap;
   border-right: 3px solid #facc15;
-  width: 0;
-  animation: typing 2.5s steps(28, end) forwards, blink-caret 0.75s step-end infinite;
+  clip-path: inset(0 100% 0 0);
+  animation: reveal 2.5s steps(30, end) forwards, blink-caret 0.75s step-end infinite;
 }
 
-@keyframes typing {
-  from {
-    width: 0;
-  }
+@keyframes reveal {
   to {
-    width: 28ch;
+    clip-path: inset(0 0 0 0);
   }
 }
 
