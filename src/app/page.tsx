@@ -81,38 +81,34 @@ export default async function HomePage() {
         </div>
       </div>
 
-      {/* Main Header */}
-      <header className="bg-white shadow-sm sticky top-0 z-50">
+      {/* Main Header - Green Background */}
+      <header className="bg-primary sticky top-0 z-50">
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between h-14">
             <Link href="/" className="flex items-center gap-3">
               <Image 
-                src="https://tawi-tawi.gov.ph/wp-content/uploads/2020/06/cropped-tt-logo-1.png" 
-                alt="Tawi-Tawi Logo"
-                width={50}
-                height={50}
-                className="w-12 h-12"
+                src="https://storage.googleapis.com/msgsndr/xzA6eU8kOYmBuwFdr3CF/media/692c2fb282f4c5268e1baafe.png" 
+                alt="Tawi-Tawi Provincial Seal"
+                width={40}
+                height={40}
+                className="w-10 h-10"
               />
-              <div>
-                <h1 className="font-bold text-lg text-primary leading-tight">PROVINCE OF TAWI-TAWI</h1>
-                <p className="text-xs text-muted-foreground">Gobyernong kaSali ang lahat</p>
-              </div>
             </Link>
             
             {/* Desktop Navigation */}
             <nav className="hidden lg:flex items-center gap-1">
-              <Link href="/" className="px-3 py-2 text-sm font-medium hover:text-primary transition-colors">
+              <Link href="/" className="px-4 py-2 text-sm font-medium text-white border border-white rounded hover:bg-white/10 transition-colors">
                 HOME
               </Link>
               
               {/* Province Dropdown */}
               <div className="relative group">
-                <button className="px-3 py-2 text-sm font-medium hover:text-primary transition-colors flex items-center gap-1">
+                <button className="px-4 py-2 text-sm font-medium text-white hover:bg-white/10 transition-colors flex items-center gap-1">
                   PROVINCE <ChevronDown className="w-3 h-3" />
                 </button>
                 <div className="absolute top-full left-0 bg-white shadow-lg rounded-md py-2 min-w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
                   {provinceDropdown.map((item) => (
-                    <Link key={item.href} href={item.href} className="block px-4 py-2 text-sm hover:bg-gray-100 hover:text-primary">
+                    <Link key={item.href} href={item.href} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary">
                       {item.name}
                     </Link>
                   ))}
@@ -121,31 +117,31 @@ export default async function HomePage() {
 
               {/* Municipalities Dropdown */}
               <div className="relative group">
-                <button className="px-3 py-2 text-sm font-medium hover:text-primary transition-colors flex items-center gap-1">
+                <button className="px-4 py-2 text-sm font-medium text-white hover:bg-white/10 transition-colors flex items-center gap-1">
                   MUNICIPALITIES <ChevronDown className="w-3 h-3" />
                 </button>
                 <div className="absolute top-full left-0 bg-white shadow-lg rounded-md py-2 min-w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
                   {municipalitiesNav.map((item) => (
-                    <Link key={item.href} href={item.href} className="block px-4 py-2 text-sm hover:bg-gray-100 hover:text-primary">
+                    <Link key={item.href} href={item.href} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary">
                       {item.name}
                     </Link>
                   ))}
                 </div>
               </div>
 
-              <Link href="/gazette" className="px-3 py-2 text-sm font-medium hover:text-primary transition-colors">
+              <Link href="/gazette" className="px-4 py-2 text-sm font-medium text-white hover:bg-white/10 transition-colors">
                 GAZETTE
               </Link>
-              <Link href="/directory" className="px-3 py-2 text-sm font-medium hover:text-primary transition-colors">
+              <Link href="/directory" className="px-4 py-2 text-sm font-medium text-white hover:bg-white/10 transition-colors">
                 DIRECTORY
               </Link>
-              <Link href="/contact-us" className="px-3 py-2 text-sm font-medium hover:text-primary transition-colors">
+              <Link href="/contact-us" className="px-4 py-2 text-sm font-medium text-white hover:bg-white/10 transition-colors">
                 CONTACT US
               </Link>
             </nav>
 
             {/* Mobile Menu Button */}
-            <button className="lg:hidden p-2">
+            <button className="lg:hidden p-2 text-white">
               <Menu className="w-6 h-6" />
             </button>
           </div>
@@ -158,70 +154,48 @@ export default async function HomePage() {
         style={{
           backgroundImage: 'url(https://storage.googleapis.com/msgsndr/xzA6eU8kOYmBuwFdr3CF/media/692c3036aaad917619d94776.jpeg)',
           backgroundSize: 'cover',
-          backgroundPosition: 'center top',
+          backgroundPosition: 'center',
         }}
       >
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/40" />
+        {/* Dark Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/60" />
         
-        {/* Philippine Flag Logo - Top Center */}
-        <div className="absolute top-8 left-1/2 -translate-x-1/2 z-20">
-          <Image 
-            src="https://storage.googleapis.com/msgsndr/xzA6eU8kOYmBuwFdr3CF/media/692c303f82f4c581fb1bb2f9.png"
-            alt="Philippine Flag"
-            width={60}
-            height={40}
-            className="w-auto h-10"
-          />
-        </div>
-
-        {/* Main Content */}
-        <div className="relative z-10 text-center">
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-2 tracking-wider drop-shadow-lg" style={{ fontStyle: 'italic' }}>
+        {/* Main Content - Centered Text */}
+        <div className="relative z-10 text-center -mt-20">
+          <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold mb-2 tracking-wider drop-shadow-2xl italic">
             TAWI-TAWI
           </h1>
-          <p className="text-2xl md:text-3xl lg:text-4xl font-light tracking-widest drop-shadow-lg">
+          <p className="text-2xl md:text-4xl lg:text-5xl font-light tracking-widest drop-shadow-xl mb-4">
             TO THE WORLD
+          </p>
+          <p className="text-xl md:text-2xl lg:text-3xl italic text-yellow-400 drop-shadow-xl">
+            GOByernong kaSali ang lahat!
           </p>
         </div>
 
-        {/* Provincial Seal - Center Bottom */}
-        <div className="absolute bottom-32 left-1/2 -translate-x-1/2 z-10">
+        {/* Governor and Vice Governor - Full Width at Bottom */}
+        <div className="absolute bottom-0 left-0 right-0 z-10">
           <Image 
-            src="https://storage.googleapis.com/msgsndr/xzA6eU8kOYmBuwFdr3CF/media/692c2fb282f4c5268e1baafe.png"
-            alt="Tawi-Tawi Provincial Seal"
-            width={100}
-            height={100}
-            className="w-20 h-20 md:w-24 md:h-24"
+            src="https://storage.googleapis.com/msgsndr/xzA6eU8kOYmBuwFdr3CF/media/692c2faf82f4c5c37d1baacc.png"
+            alt="Governor Yshmael Mang Sali and Vice Governor Al-Syed Sali"
+            width={1920}
+            height={800}
+            className="w-full h-auto object-contain object-bottom"
+            style={{ maxHeight: '55vh' }}
+            priority
           />
         </div>
 
-        {/* Governor - Left Side */}
-        <div className="absolute bottom-0 left-0 md:left-10 lg:left-20 z-10">
-          <div className="relative">
-            <Image 
-              src="https://storage.googleapis.com/msgsndr/xzA6eU8kOYmBuwFdr3CF/media/692c2faf82f4c5c37d1baacc.png"
-              alt="Governor and Vice Governor"
-              width={1000}
-              height={600}
-              className="w-full max-w-[1000px] h-auto object-contain"
-              style={{ maxHeight: '70vh' }}
-            />
-          </div>
-        </div>
-
-        {/* Governor & Vice Governor Labels */}
-        <div className="absolute bottom-8 left-0 right-0 z-20">
-          <div className="container mx-auto px-4">
-            <div className="flex justify-between items-end">
-              <div className="text-center ml-4 md:ml-20 lg:ml-32">
-                <h3 className="text-xl md:text-2xl font-bold text-yellow-400 drop-shadow-lg">YSHMAEL &quot;MANG&quot; I. SALI</h3>
-                <p className="text-white text-sm md:text-base">Governor</p>
-              </div>
-              <div className="text-center mr-4 md:mr-20 lg:mr-32">
-                <h3 className="text-xl md:text-2xl font-bold text-yellow-400 drop-shadow-lg">AL-SYED A. SALI</h3>
-                <p className="text-white text-sm md:text-base">Vice Governor</p>
-              </div>
+        {/* Governor & Vice Governor Labels - At Very Bottom */}
+        <div className="absolute bottom-4 left-0 right-0 z-20">
+          <div className="flex justify-between items-end px-4 md:px-16 lg:px-32">
+            <div className="text-center">
+              <h3 className="text-lg md:text-2xl lg:text-3xl font-bold text-yellow-400 drop-shadow-xl">YSHMAEL &quot;MANG&quot; I. SALI</h3>
+              <p className="text-white text-sm md:text-lg">Governor</p>
+            </div>
+            <div className="text-center">
+              <h3 className="text-lg md:text-2xl lg:text-3xl font-bold text-yellow-400 drop-shadow-xl">AL-SYED A. SALI</h3>
+              <p className="text-white text-sm md:text-lg">Vice Governor</p>
             </div>
           </div>
         </div>
