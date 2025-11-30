@@ -51,6 +51,89 @@ export async function getProfileBySlug(slug: string): Promise<Profile | null> {
   return { id: doc.id, ...doc.data() } as Profile
 }
 
+// Position category to URL slug mapping
+const POSITION_URL_MAP: Record<string, string> = {
+  'GOVERNOR': 'governor',
+  'VICE_GOVERNOR': 'vice-governor',
+  'BOARD_MEMBER': 'board-member',
+  'EX_OFFICIO': 'ex-officio',
+  'SP_SECRETARY': 'sp-secretary',
+  'DEPARTMENT_HEAD': 'department-head',
+  'MAYOR': 'mayor',
+  'VICE_MAYOR': 'vice-mayor',
+  'COUNCILOR': 'councilor',
+  'OTHER': 'other',
+}
+
+// Reverse mapping: URL slug to position category
+const URL_POSITION_MAP: Record<string, Profile['positionCategory']> = {
+  'governor': 'GOVERNOR',
+  'vice-governor': 'VICE_GOVERNOR',
+  'board-member': 'BOARD_MEMBER',
+  'ex-officio': 'EX_OFFICIO',
+  'sp-secretary': 'SP_SECRETARY',
+  'department-head': 'DEPARTMENT_HEAD',
+  'mayor': 'MAYOR',
+  'vice-mayor': 'VICE_MAYOR',
+  'councilor': 'COUNCILOR',
+  'other': 'OTHER',
+}
+
+// Positions that should only have one active profile
+export const UNIQUE_POSITIONS: Profile['positionCategory'][] = [
+  'GOVERNOR',
+  'VICE_GOVERNOR',
+  'SP_SECRETARY',
+]
+
+export function getPositionUrlSlug(category: Profile['positionCategory'] | undefined): string {
+  if (!category) return 'other'
+  return POSITION_URL_MAP[category] || 'other'
+}
+
+export function getPositionFromUrlSlug(urlSlug: string): Profile['positionCategory'] | null {
+  return URL_POSITION_MAP[urlSlug] || null
+}
+
+export async function getProfileByPositionAndSlug(
+  positionUrlSlug: string,
+  profileSlug: string
+): Promise<Profile | null> {
+  const positionCategory = getPositionFromUrlSlug(positionUrlSlug)
+  if (!positionCategory) return null
+
+  const allProfiles = await getProfiles()
+  const profile = allProfiles.find(
+    p => p.positionCategory === positionCategory && p.slug === profileSlug
+  )
+  
+  return profile || null
+}
+
+export async function getCurrentGovernor(): Promise<Profile | null> {
+  const allProfiles = await getProfiles()
+  return allProfiles.find(p => p.positionCategory === 'GOVERNOR') || null
+}
+
+export async function getCurrentViceGovernor(): Promise<Profile | null> {
+  const allProfiles = await getProfiles()
+  return allProfiles.find(p => p.positionCategory === 'VICE_GOVERNOR') || null
+}
+
+export async function checkUniquePositionExists(
+  category: Profile['positionCategory'],
+  excludeId?: string
+): Promise<boolean> {
+  if (!UNIQUE_POSITIONS.includes(category)) return false
+  
+  const allProfiles = await getProfiles()
+  const existing = allProfiles.find(
+    p => p.positionCategory === category && p.id !== excludeId
+  )
+  
+  return !!existing
+}
+
 export async function getProfilesByCategory(category: Profile['positionCategory']): Promise<Profile[]> {
   // Simple query without compound index requirement
   const snapshot = await getDocs(collection(db, COLLECTION))
