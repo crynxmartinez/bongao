@@ -185,20 +185,6 @@ export default async function HomePage() {
             priority
           />
         </div>
-
-        {/* Governor & Vice Governor Labels - At Very Bottom */}
-        <div className="absolute bottom-4 left-0 right-0 z-20">
-          <div className="flex justify-between items-end px-4 md:px-16 lg:px-32">
-            <div className="text-center">
-              <h3 className="text-lg md:text-2xl lg:text-3xl font-bold text-yellow-400 drop-shadow-xl">YSHMAEL &quot;MANG&quot; I. SALI</h3>
-              <p className="text-white text-sm md:text-lg">Governor</p>
-            </div>
-            <div className="text-center">
-              <h3 className="text-lg md:text-2xl lg:text-3xl font-bold text-yellow-400 drop-shadow-xl">AL-SYED A. SALI</h3>
-              <p className="text-white text-sm md:text-lg">Vice Governor</p>
-            </div>
-          </div>
-        </div>
       </section>
 
       {/* 11-Point Agenda */}
