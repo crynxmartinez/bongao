@@ -22,39 +22,47 @@ const COLLECTION = 'provincial_news'
 // ============================================
 
 export async function getProvincialNews(publishedOnly = true): Promise<ProvincialNews[]> {
-  let q = query(
-    collection(db, COLLECTION),
-    orderBy('createdAt', 'desc')
-  )
-  
-  if (publishedOnly) {
-    q = query(
-      collection(db, COLLECTION),
-      where('published', '==', true),
-      orderBy('publishedAt', 'desc')
-    )
-  }
-  
-  const snapshot = await getDocs(q)
-  return snapshot.docs.map((doc) => ({
+  // Simple query without compound index requirement
+  const snapshot = await getDocs(collection(db, COLLECTION))
+  let results = snapshot.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
   })) as ProvincialNews[]
+  
+  // Filter in memory
+  if (publishedOnly) {
+    results = results.filter(n => n.published)
+  }
+  
+  // Sort by date (newest first)
+  results.sort((a, b) => {
+    const dateA = new Date(a.publishedAt || a.createdAt).getTime()
+    const dateB = new Date(b.publishedAt || b.createdAt).getTime()
+    return dateB - dateA
+  })
+  
+  return results
 }
 
 export async function getFeaturedNews(limitCount = 5): Promise<ProvincialNews[]> {
-  const q = query(
-    collection(db, COLLECTION),
-    where('published', '==', true),
-    where('featured', '==', true),
-    orderBy('publishedAt', 'desc'),
-    limit(limitCount)
-  )
-  const snapshot = await getDocs(q)
-  return snapshot.docs.map((doc) => ({
+  // Simple query without compound index requirement
+  const snapshot = await getDocs(collection(db, COLLECTION))
+  let results = snapshot.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
   })) as ProvincialNews[]
+  
+  // Filter in memory
+  results = results.filter(n => n.published && n.featured)
+  
+  // Sort by date (newest first)
+  results.sort((a, b) => {
+    const dateA = new Date(a.publishedAt || a.createdAt).getTime()
+    const dateB = new Date(b.publishedAt || b.createdAt).getTime()
+    return dateB - dateA
+  })
+  
+  return results.slice(0, limitCount)
 }
 
 export async function getNewsById(id: string): Promise<ProvincialNews | null> {
