@@ -1,29 +1,53 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { 
   MapPin, 
   Phone, 
   Mail, 
   Clock, 
   ChevronRight,
-  Building2,
-  Users,
-  FileText,
-  Newspaper,
-  BookOpen,
-  Mountain
+  ChevronDown,
+  Menu
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { getMunicipalities } from '@/lib/firestore/municipalities'
 
-// Quick Links - these are static navigation items
-const quickLinks = [
-  { title: 'The Governor', href: '/governor', icon: Users, description: 'Office of the Governor' },
-  { title: 'Sangguniang Panlalawigan', href: '/sangguniang-panlalawigan', icon: Building2, description: 'Provincial Board' },
-  { title: 'Directory', href: '/directory', icon: BookOpen, description: 'Government Offices' },
-  { title: 'Gazette', href: '/gazette', icon: FileText, description: 'Ordinances & Resolutions' },
-  { title: 'News', href: '/news', icon: Newspaper, description: 'Latest Updates' },
-  { title: 'History', href: '/history', icon: Mountain, description: 'Provincial History' },
+// Navigation structure matching original site
+const provinceDropdown = [
+  { name: 'The Governor', href: '/the-governor' },
+  { name: 'Sangguniang Panlalawigan', href: '/sangguniang-panlalawigan' },
+  { name: 'History', href: '/history' },
+]
+
+// 11 Municipalities
+const municipalitiesNav = [
+  { name: 'Bongao', href: '/bongao' },
+  { name: 'Mapun', href: '/mapun' },
+  { name: 'Sibutu', href: '/sibutu' },
+  { name: 'Sitangkai', href: '/sitangkai' },
+  { name: 'Simunul', href: '/simunul' },
+  { name: 'Languyan', href: '/languyan' },
+  { name: 'Panglima Sugala', href: '/panglima-sugala' },
+  { name: 'Sapa-Sapa', href: '/sapa-sapa' },
+  { name: 'South Ubian', href: '/south-ubian' },
+  { name: 'Tandubas', href: '/tandubas' },
+  { name: 'Turtle Island', href: '/turtle-island' },
+]
+
+// 11-Point Agenda from original site
+const agenda = [
+  { number: 1, title: 'Governance for Prosperity', description: 'Integrity and Unity in the Bangsamoro Autonomous Region in Muslim Mindanao (BARMM).' },
+  { number: 2, title: 'Gateway to BIMP-EAGA', description: 'Opens its Gateway and make Tawi-Tawi as the main hub of trading in BARMM to the BIMPEAGA member countries and boost socioeconomic activities.' },
+  { number: 3, title: 'Revenue & Tourism', description: 'Becomes the BARMM biggest revenue contributor not only for aqua-agriculture product, but to eco-tourism industry.' },
+  { number: 4, title: 'Halal Manufacturing', description: 'Manufacturing and producers of basic halal Commodities like Tuna, mackerel canning, semiprocessed seaweeds and other processed Aquatic food produce.' },
+  { number: 5, title: 'Communication & Transport', description: 'Advancement to both Communication and Transportation facilities to Boost Economic Activities, Faster, accessible information Technology.' },
+  { number: 6, title: 'Natural Resources', description: 'Natural Resources Management Programs to Sustain Ecological and Environmental Protection for disaster resiliency.' },
+  { number: 7, title: 'Gender & Development', description: 'Gender and development advocacy. Protection of children and woman.' },
+  { number: 8, title: 'Health & Education', description: 'Sustainability and Development for Health, Education and Basic Services. Water system improvement and Power availability.' },
+  { number: 9, title: 'Anti-Drug Campaign', description: 'Anti-Drug Abuse Campaign and Anti-RedTape, Anti-Terrorism and Extremism ending all forms of violence.' },
+  { number: 10, title: 'Livable Tawi-Tawi', description: 'Livable Tawi-Tawi with Sufficient Foods, Effective Services, Enhanced Service Providers. Guaranteed income and secured foods.' },
+  { number: 11, title: 'Tourism Destination', description: 'Introducing Tawi-Tawi To The World and make it as a prime tourist destination with proud cultural heritage.' },
 ]
 
 export default async function HomePage() {
@@ -37,87 +61,144 @@ export default async function HomePage() {
   }
   return (
     <div className="min-h-screen">
-      {/* Header */}
-      <header className="bg-white border-b sticky top-0 z-50">
+      {/* Top Bar */}
+      <div className="bg-primary text-white text-sm py-2">
+        <div className="container mx-auto px-4 flex flex-wrap justify-between items-center gap-2">
+          <div className="flex items-center gap-4">
+            <span className="flex items-center gap-1">
+              <Phone className="w-3 h-3" />
+              +63 966 2732 237 | +63 930 5135 195
+            </span>
+            <span className="hidden sm:flex items-center gap-1">
+              <Mail className="w-3 h-3" />
+              kasalitawitawi2019@gmail.com
+            </span>
+          </div>
+          <span className="flex items-center gap-1">
+            <Clock className="w-3 h-3" />
+            Monday - Friday: 8:00 AM - 5:00 PM
+          </span>
+        </div>
+      </div>
+
+      {/* Main Header */}
+      <header className="bg-white shadow-sm sticky top-0 z-50">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
-            <Link href="/" className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-                <span className="text-white font-bold text-sm">TT</span>
-              </div>
+            <Link href="/" className="flex items-center gap-3">
+              <Image 
+                src="https://tawi-tawi.gov.ph/wp-content/uploads/2020/06/cropped-tt-logo-1.png" 
+                alt="Tawi-Tawi Logo"
+                width={50}
+                height={50}
+                className="w-12 h-12"
+              />
               <div>
-                <h1 className="font-bold text-lg leading-tight">Province of Tawi-Tawi</h1>
+                <h1 className="font-bold text-lg text-primary leading-tight">PROVINCE OF TAWI-TAWI</h1>
                 <p className="text-xs text-muted-foreground">Gobyernong kaSali ang lahat</p>
               </div>
             </Link>
             
-            <nav className="hidden md:flex items-center gap-6">
-              <Link href="/governor" className="text-sm hover:text-primary transition-colors">Governor</Link>
-              <Link href="/sangguniang-panlalawigan" className="text-sm hover:text-primary transition-colors">Officials</Link>
-              <Link href="/municipalities" className="text-sm hover:text-primary transition-colors">Municipalities</Link>
-              <Link href="/directory" className="text-sm hover:text-primary transition-colors">Directory</Link>
-              <Link href="/gazette" className="text-sm hover:text-primary transition-colors">Gazette</Link>
-              <Link href="/news" className="text-sm hover:text-primary transition-colors">News</Link>
-              <Link href="/contact" className="text-sm hover:text-primary transition-colors">Contact</Link>
+            {/* Desktop Navigation */}
+            <nav className="hidden lg:flex items-center gap-1">
+              <Link href="/" className="px-3 py-2 text-sm font-medium hover:text-primary transition-colors">
+                HOME
+              </Link>
+              
+              {/* Province Dropdown */}
+              <div className="relative group">
+                <button className="px-3 py-2 text-sm font-medium hover:text-primary transition-colors flex items-center gap-1">
+                  PROVINCE <ChevronDown className="w-3 h-3" />
+                </button>
+                <div className="absolute top-full left-0 bg-white shadow-lg rounded-md py-2 min-w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+                  {provinceDropdown.map((item) => (
+                    <Link key={item.href} href={item.href} className="block px-4 py-2 text-sm hover:bg-gray-100 hover:text-primary">
+                      {item.name}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
+              {/* Municipalities Dropdown */}
+              <div className="relative group">
+                <button className="px-3 py-2 text-sm font-medium hover:text-primary transition-colors flex items-center gap-1">
+                  MUNICIPALITIES <ChevronDown className="w-3 h-3" />
+                </button>
+                <div className="absolute top-full left-0 bg-white shadow-lg rounded-md py-2 min-w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+                  {municipalitiesNav.map((item) => (
+                    <Link key={item.href} href={item.href} className="block px-4 py-2 text-sm hover:bg-gray-100 hover:text-primary">
+                      {item.name}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
+              <Link href="/gazette" className="px-3 py-2 text-sm font-medium hover:text-primary transition-colors">
+                GAZETTE
+              </Link>
+              <Link href="/directory" className="px-3 py-2 text-sm font-medium hover:text-primary transition-colors">
+                DIRECTORY
+              </Link>
+              <Link href="/contact-us" className="px-3 py-2 text-sm font-medium hover:text-primary transition-colors">
+                CONTACT US
+              </Link>
             </nav>
 
-            <Link href="/admin">
-              <Button variant="outline" size="sm">Admin</Button>
-            </Link>
+            {/* Mobile Menu Button */}
+            <button className="lg:hidden p-2">
+              <Menu className="w-6 h-6" />
+            </button>
           </div>
         </div>
       </header>
 
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-ocean-600 via-ocean-500 to-ocean-700 text-white py-24 md:py-32">
-        <div className="absolute inset-0 bg-black/20" />
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-3xl">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              Welcome to Tawi-Tawi
-            </h1>
-            <p className="text-xl md:text-2xl mb-8 text-white/90">
-              The Southernmost Province of the Philippines. Gateway to BIMP-EAGA. 
-              Home to pristine beaches, rich culture, and the most hospitable people of the south.
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <Link href="/governor">
-                <Button size="lg" className="bg-white text-ocean-600 hover:bg-white/90">
-                  Meet the Governor
-                </Button>
-              </Link>
-              <Link href="/municipalities">
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
-                  Explore Municipalities
-                </Button>
-              </Link>
-            </div>
-          </div>
+      <section 
+        className="relative min-h-[500px] md:min-h-[600px] flex items-center justify-center text-white"
+        style={{
+          backgroundImage: 'url(https://tawi-tawi.gov.ph/wp-content/uploads/2020/06/slider-1.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
+        <div className="absolute inset-0 bg-black/40" />
+        <div className="container mx-auto px-4 relative z-10 text-center">
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-4 tracking-wider">
+            TAWI-TAWI
+          </h1>
+          <p className="text-xl md:text-2xl mb-8 max-w-2xl mx-auto">
+            The Southernmost Province of the Philippines
+          </p>
+          <p className="text-lg italic">Gobyernong kaSali ang lahat</p>
         </div>
       </section>
 
-      {/* Quick Links */}
-      <section className="py-16 bg-gray-50">
+      {/* 11-Point Agenda */}
+      <section className="py-16 bg-primary text-white">
         <div className="container mx-auto px-4">
-          <h2 className="text-2xl font-bold mb-8 text-center">Quick Links</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {quickLinks.map((link) => (
-              <Link key={link.href} href={link.href}>
-                <Card className="h-full hover:shadow-md transition-shadow cursor-pointer">
-                  <CardContent className="p-4 text-center">
-                    <link.icon className="w-8 h-8 mx-auto mb-2 text-primary" />
-                    <h3 className="font-semibold text-sm">{link.title}</h3>
-                    <p className="text-xs text-muted-foreground mt-1">{link.description}</p>
-                  </CardContent>
-                </Card>
-              </Link>
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">EXPANDED ELEVEN (11) POINT AGENDA</h2>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {agenda.map((item) => (
+              <div key={item.number} className="bg-white/10 backdrop-blur rounded-lg p-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-full bg-white text-primary flex items-center justify-center font-bold flex-shrink-0">
+                    {item.number}
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-lg mb-2">{item.title}</h3>
+                    <p className="text-white/80 text-sm">{item.description}</p>
+                  </div>
+                </div>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
       {/* Municipalities */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">Our Municipalities</h2>
@@ -125,18 +206,13 @@ export default async function HomePage() {
               Tawi-Tawi is composed of 11 municipalities, each with its unique culture, history, and natural beauty.
             </p>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {municipalities.map((muni) => (
-              <Link key={muni.id} href={`/municipalities/${muni.slug}`}>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {municipalitiesNav.map((muni) => (
+              <Link key={muni.href} href={muni.href}>
                 <Card className="h-full hover:shadow-md transition-shadow cursor-pointer group">
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between">
-                      <div>
-                        <h3 className="font-semibold group-hover:text-primary transition-colors">{muni.name}</h3>
-                        {muni.tagline && (
-                          <p className="text-sm text-muted-foreground">{muni.tagline}</p>
-                        )}
-                      </div>
+                      <h3 className="font-semibold group-hover:text-primary transition-colors">{muni.name}</h3>
                       <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
                     </div>
                   </CardContent>
@@ -182,33 +258,48 @@ export default async function HomePage() {
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
-              <h3 className="font-bold text-lg mb-4">Province of Tawi-Tawi</h3>
+              <h3 className="font-bold text-lg mb-4">Republic of the Philippines</h3>
               <p className="text-gray-400 text-sm">
-                Gobyernong kaSali ang lahat
+                All content is in the public domain unless otherwise stated.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">Quick Links</h4>
+              <h4 className="font-semibold mb-4">About GOVPH</h4>
+              <p className="text-sm text-gray-400 mb-4">
+                Learn more about the Philippine government, its structure, how government works and the people behind it.
+              </p>
               <ul className="space-y-2 text-sm text-gray-400">
-                <li><Link href="/governor" className="hover:text-white transition-colors">The Governor</Link></li>
-                <li><Link href="/sangguniang-panlalawigan" className="hover:text-white transition-colors">Officials</Link></li>
-                <li><Link href="/directory" className="hover:text-white transition-colors">Directory</Link></li>
-                <li><Link href="/gazette" className="hover:text-white transition-colors">Gazette</Link></li>
+                <li><a href="https://www.gov.ph" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">GOV.PH</a></li>
+                <li><a href="https://www.gov.ph/data" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Open Data Portal</a></li>
+                <li><a href="https://www.officialgazette.gov.ph" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Official Gazette</a></li>
               </ul>
             </div>
             <div>
               <h4 className="font-semibold mb-4">Government Links</h4>
               <ul className="space-y-2 text-sm text-gray-400">
-                <li><a href="https://www.gov.ph" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">GOV.PH</a></li>
                 <li><a href="https://president.gov.ph" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Office of the President</a></li>
-                <li><a href="https://www.officialgazette.gov.ph" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Official Gazette</a></li>
+                <li><a href="http://ovp.gov.ph" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Office of the Vice President</a></li>
+                <li><a href="http://www.senate.gov.ph" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Senate of the Philippines</a></li>
+                <li><a href="http://www.congress.gov.ph" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">House of Representatives</a></li>
+                <li><a href="http://sc.judiciary.gov.ph" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Supreme Court</a></li>
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">About GOVPH</h4>
-              <p className="text-sm text-gray-400">
-                Learn more about the Philippine government, its structure, how government works and the people behind it.
-              </p>
+              <h4 className="font-semibold mb-4">Contact Us</h4>
+              <ul className="space-y-2 text-sm text-gray-400">
+                <li className="flex items-center gap-2">
+                  <Phone className="w-4 h-4" />
+                  +63 966 2732 237
+                </li>
+                <li className="flex items-center gap-2">
+                  <Mail className="w-4 h-4" />
+                  kasalitawitawi2019@gmail.com
+                </li>
+                <li className="flex items-center gap-2">
+                  <MapPin className="w-4 h-4" />
+                  Capitol Hills, Tubig Boh, Bongao
+                </li>
+              </ul>
             </div>
           </div>
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400">
