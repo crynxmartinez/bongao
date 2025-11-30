@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { collection, getDocs, addDoc, Timestamp } from 'firebase/firestore'
 import { db } from '@/lib/firebase'
-import { hashPassword } from '@/lib/auth'
+import bcrypt from 'bcryptjs'
 
 // This endpoint creates the initial admin user
 // Should only be run once during initial setup
@@ -18,7 +18,7 @@ export async function GET() {
     }
 
     // Create admin user
-    const hashedPassword = await hashPassword('admin123')
+    const hashedPassword = await bcrypt.hash('admin123', 12)
     await addDoc(collection(db, 'users'), {
       username: 'admin',
       email: 'admin@tawi-tawi.gov.ph',
@@ -37,8 +37,9 @@ export async function GET() {
     })
   } catch (error) {
     console.error('Seed error:', error)
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error'
     return NextResponse.json(
-      { success: false, error: 'Failed to create admin user' },
+      { success: false, error: 'Failed to create admin user', details: errorMessage },
       { status: 500 }
     )
   }
