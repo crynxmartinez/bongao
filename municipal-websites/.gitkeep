@@ -1,0 +1,9 @@
+# This folder contains blank municipal website projects
+# Each municipality will have its own website built here
+# 
+# Structure:
+# municipal-websites/
+# ├── bongao/        <- Bongao municipal website
+# ├── mapun/         <- Mapun municipal website
+# ├── sibutu/        <- Sibutu municipal website
+# └── ...
