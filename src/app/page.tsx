@@ -89,10 +89,11 @@ export default async function HomePage() {
               <Image 
                 src="https://storage.googleapis.com/msgsndr/xzA6eU8kOYmBuwFdr3CF/media/692c2fb282f4c5268e1baafe.png" 
                 alt="Tawi-Tawi Provincial Seal"
-                width={40}
-                height={40}
-                className="w-10 h-10"
+                width={50}
+                height={50}
+                className="w-12 h-12"
               />
+              <span className="text-white font-semibold hidden md:block">PROVINCE OF TAWI-TAWI</span>
             </Link>
             
             {/* Desktop Navigation */}
