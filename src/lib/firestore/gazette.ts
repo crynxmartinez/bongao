@@ -82,6 +82,8 @@ export async function deleteGazette(id: string): Promise<void> {
 // Get unique years for filtering
 export async function getGazetteYears(): Promise<number[]> {
   const gazettes = await getGazettes()
-  const years = [...new Set(gazettes.map((g) => g.year))]
+  const yearSet = new Set<number>()
+  gazettes.forEach((g) => yearSet.add(g.year))
+  const years = Array.from(yearSet)
   return years.sort((a, b) => b - a)
 }
