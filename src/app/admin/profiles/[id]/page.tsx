@@ -30,6 +30,7 @@ export default function EditProfilePage() {
     currentOrganization: '',
     positionCategory: undefined,
     district: undefined,
+    municipalitySlug: undefined,
     positionOrder: 0,
     shortBio: '',
     fullBio: '',
@@ -240,8 +241,8 @@ export default function EditProfilePage() {
               </div>
             </div>
             
-            {/* Position Category for Sangguniang Panlalawigan */}
-            <div className="grid grid-cols-3 gap-4">
+            {/* Position Category */}
+            <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="positionCategory">Position Category</Label>
                 <select
@@ -252,17 +253,39 @@ export default function EditProfilePage() {
                   className="w-full h-10 px-3 rounded-md border border-input bg-background text-sm"
                 >
                   <option value="">-- Select --</option>
-                  <option value="GOVERNOR">Governor</option>
-                  <option value="VICE_GOVERNOR">Vice Governor</option>
-                  <option value="SP_SECRETARY">SP Secretary</option>
-                  <option value="BOARD_MEMBER">Board Member</option>
-                  <option value="EX_OFFICIO">Ex-Officio Member</option>
-                  <option value="DEPARTMENT_HEAD">Department Head</option>
+                  <optgroup label="Provincial">
+                    <option value="GOVERNOR">Governor</option>
+                    <option value="VICE_GOVERNOR">Vice Governor</option>
+                    <option value="SP_SECRETARY">SP Secretary</option>
+                    <option value="BOARD_MEMBER">Board Member (SP)</option>
+                    <option value="EX_OFFICIO">Ex-Officio Member</option>
+                    <option value="DEPARTMENT_HEAD">Department Head</option>
+                  </optgroup>
+                  <optgroup label="Municipal">
+                    <option value="MAYOR">Mayor</option>
+                    <option value="VICE_MAYOR">Vice Mayor</option>
+                    <option value="COUNCILOR">Councilor</option>
+                  </optgroup>
                   <option value="OTHER">Other</option>
                 </select>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="district">District</Label>
+                <Label htmlFor="positionOrder">Display Order</Label>
+                <Input
+                  id="positionOrder"
+                  name="positionOrder"
+                  type="number"
+                  value={formData.positionOrder || 0}
+                  onChange={(e) => setFormData(prev => ({ ...prev, positionOrder: parseInt(e.target.value) || 0 }))}
+                  placeholder="0"
+                />
+              </div>
+            </div>
+            
+            {/* District (for Board Members) */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="district">District (for Board Members)</Label>
                 <select
                   id="district"
                   name="district"
@@ -277,15 +300,28 @@ export default function EditProfilePage() {
                 </select>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="positionOrder">Display Order</Label>
-                <Input
-                  id="positionOrder"
-                  name="positionOrder"
-                  type="number"
-                  value={formData.positionOrder || 0}
-                  onChange={(e) => setFormData(prev => ({ ...prev, positionOrder: parseInt(e.target.value) || 0 }))}
-                  placeholder="0"
-                />
+                <Label htmlFor="municipalitySlug">Municipality (for Municipal Officials)</Label>
+                <select
+                  id="municipalitySlug"
+                  name="municipalitySlug"
+                  value={formData.municipalitySlug || ''}
+                  onChange={(e) => setFormData(prev => ({ ...prev, municipalitySlug: e.target.value || undefined }))}
+                  className="w-full h-10 px-3 rounded-md border border-input bg-background text-sm"
+                  disabled={!['MAYOR', 'VICE_MAYOR', 'COUNCILOR'].includes(formData.positionCategory || '')}
+                >
+                  <option value="">-- Select --</option>
+                  <option value="bongao">Bongao</option>
+                  <option value="languyan">Languyan</option>
+                  <option value="mapun">Mapun</option>
+                  <option value="panglima-sugala">Panglima Sugala</option>
+                  <option value="sapa-sapa">Sapa-Sapa</option>
+                  <option value="sibutu">Sibutu</option>
+                  <option value="simunul">Simunul</option>
+                  <option value="sitangkai">Sitangkai</option>
+                  <option value="south-ubian">South Ubian</option>
+                  <option value="tandubas">Tandubas</option>
+                  <option value="turtle-islands">Turtle Islands</option>
+                </select>
               </div>
             </div>
           </CardContent>

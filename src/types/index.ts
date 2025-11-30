@@ -35,8 +35,9 @@ export interface Profile {
   currentOrganization?: string
   
   // Position Category (for filtering/grouping)
-  positionCategory?: 'GOVERNOR' | 'VICE_GOVERNOR' | 'BOARD_MEMBER' | 'EX_OFFICIO' | 'SP_SECRETARY' | 'DEPARTMENT_HEAD' | 'OTHER'
+  positionCategory?: 'GOVERNOR' | 'VICE_GOVERNOR' | 'BOARD_MEMBER' | 'EX_OFFICIO' | 'SP_SECRETARY' | 'DEPARTMENT_HEAD' | 'MAYOR' | 'VICE_MAYOR' | 'COUNCILOR' | 'OTHER'
   district?: 'FIRST' | 'SECOND'
+  municipalitySlug?: string  // For municipal officials (bongao, mapun, sibutu, etc.)
   positionOrder?: number
   
   // Metadata
