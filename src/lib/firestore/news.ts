@@ -110,3 +110,11 @@ export async function deleteNews(id: string): Promise<void> {
   const docRef = doc(db, COLLECTION, id)
   await deleteDoc(docRef)
 }
+
+export async function toggleFeatured(id: string, featured: boolean): Promise<void> {
+  const docRef = doc(db, COLLECTION, id)
+  await updateDoc(docRef, {
+    featured,
+    updatedAt: Timestamp.now(),
+  })
+}

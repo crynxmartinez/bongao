@@ -269,9 +269,10 @@ export interface ProvincialNews {
   id: string
   title: string
   slug: string
-  content: string
+  bannerImage: string
+  content: string  // HTML from rich text editor
   excerpt?: string
-  image?: string
+  category?: 'ANNOUNCEMENT' | 'EVENT' | 'PROJECT' | 'AWARD' | 'PRESS_RELEASE' | 'GENERAL'
   featured: boolean
   authorId?: string
   authorName?: string
