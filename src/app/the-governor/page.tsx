@@ -1,11 +1,9 @@
-import Image from 'next/image'
 import Link from 'next/link'
 import { 
   MapPin, 
   Phone, 
   Mail, 
   Facebook, 
-  Calendar,
   Briefcase,
   Award,
   ArrowLeft,
@@ -55,23 +53,8 @@ export default function GovernorPage() {
           <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
             {/* Photo */}
             <div className="relative mb-6">
-              <div className="w-48 h-48 md:w-64 md:h-64 rounded-full overflow-hidden border-4 border-white shadow-xl bg-white">
-                <Image
-                  src="/governor-portrait.png"
-                  alt={fullName}
-                  width={256}
-                  height={256}
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    // Fallback to initials if image fails
-                    const target = e.target as HTMLImageElement
-                    target.style.display = 'none'
-                  }}
-                />
-                {/* Fallback initials */}
-                <div className="absolute inset-0 flex items-center justify-center bg-white/20">
-                  <span className="text-6xl font-bold text-white/80">YS</span>
-                </div>
+              <div className="w-48 h-48 md:w-64 md:h-64 rounded-full overflow-hidden border-4 border-white shadow-xl bg-primary/20 flex items-center justify-center">
+                <span className="text-6xl font-bold text-white/80">YS</span>
               </div>
             </div>
 
