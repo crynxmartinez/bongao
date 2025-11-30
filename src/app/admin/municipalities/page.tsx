@@ -268,12 +268,9 @@ export default function MunicipalitiesManagementPage() {
         <Card>
           <CardContent className="py-12 text-center">
             <MapPin className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
-            <h3 className="text-lg font-semibold mb-2">No Municipalities Detected</h3>
-            <p className="text-muted-foreground mb-4">
-              Add municipality JSON files to the registry folder, then click "Detect Websites"
-            </p>
-            <p className="text-sm text-muted-foreground">
-              Registry location: <code className="bg-muted px-2 py-1 rounded">/public/municipalities-registry/</code>
+            <h3 className="text-lg font-semibold mb-2">No Municipality Websites Detected</h3>
+            <p className="text-muted-foreground">
+              Please contact your system administrator to set up municipality websites.
             </p>
           </CardContent>
         </Card>
