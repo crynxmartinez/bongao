@@ -28,6 +28,9 @@ export default function EditProfilePage() {
     slug: '',
     currentPosition: '',
     currentOrganization: '',
+    positionCategory: undefined,
+    district: undefined,
+    positionOrder: 0,
     shortBio: '',
     fullBio: '',
     email: '',
@@ -233,6 +236,55 @@ export default function EditProfilePage() {
                   value={formData.currentOrganization || ''}
                   onChange={handleChange}
                   placeholder="e.g., Province of Tawi-Tawi"
+                />
+              </div>
+            </div>
+            
+            {/* Position Category for Sangguniang Panlalawigan */}
+            <div className="grid grid-cols-3 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="positionCategory">Position Category</Label>
+                <select
+                  id="positionCategory"
+                  name="positionCategory"
+                  value={formData.positionCategory || ''}
+                  onChange={(e) => setFormData(prev => ({ ...prev, positionCategory: e.target.value as Profile['positionCategory'] || undefined }))}
+                  className="w-full h-10 px-3 rounded-md border border-input bg-background text-sm"
+                >
+                  <option value="">-- Select --</option>
+                  <option value="GOVERNOR">Governor</option>
+                  <option value="VICE_GOVERNOR">Vice Governor</option>
+                  <option value="SP_SECRETARY">SP Secretary</option>
+                  <option value="BOARD_MEMBER">Board Member</option>
+                  <option value="EX_OFFICIO">Ex-Officio Member</option>
+                  <option value="DEPARTMENT_HEAD">Department Head</option>
+                  <option value="OTHER">Other</option>
+                </select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="district">District</Label>
+                <select
+                  id="district"
+                  name="district"
+                  value={formData.district || ''}
+                  onChange={(e) => setFormData(prev => ({ ...prev, district: e.target.value as Profile['district'] || undefined }))}
+                  className="w-full h-10 px-3 rounded-md border border-input bg-background text-sm"
+                  disabled={formData.positionCategory !== 'BOARD_MEMBER'}
+                >
+                  <option value="">-- Select --</option>
+                  <option value="FIRST">First District</option>
+                  <option value="SECOND">Second District</option>
+                </select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="positionOrder">Display Order</Label>
+                <Input
+                  id="positionOrder"
+                  name="positionOrder"
+                  type="number"
+                  value={formData.positionOrder || 0}
+                  onChange={(e) => setFormData(prev => ({ ...prev, positionOrder: parseInt(e.target.value) || 0 }))}
+                  placeholder="0"
                 />
               </div>
             </div>

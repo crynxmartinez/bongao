@@ -49,6 +49,46 @@ export async function getProfileBySlug(slug: string): Promise<Profile | null> {
   return { id: doc.id, ...doc.data() } as Profile
 }
 
+export async function getProfilesByCategory(category: Profile['positionCategory']): Promise<Profile[]> {
+  const q = query(
+    collection(db, COLLECTION),
+    where('isActive', '==', true),
+    where('positionCategory', '==', category),
+    orderBy('positionOrder', 'asc')
+  )
+  const snapshot = await getDocs(q)
+  return snapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  })) as Profile[]
+}
+
+export async function getProvincialOfficials(): Promise<{
+  governor: Profile | null
+  viceGovernor: Profile | null
+  spSecretary: Profile | null
+  boardMembersFirst: Profile[]
+  boardMembersSecond: Profile[]
+  exOfficioMembers: Profile[]
+}> {
+  const allProfiles = await getProfiles()
+  
+  return {
+    governor: allProfiles.find(p => p.positionCategory === 'GOVERNOR') || null,
+    viceGovernor: allProfiles.find(p => p.positionCategory === 'VICE_GOVERNOR') || null,
+    spSecretary: allProfiles.find(p => p.positionCategory === 'SP_SECRETARY') || null,
+    boardMembersFirst: allProfiles
+      .filter(p => p.positionCategory === 'BOARD_MEMBER' && p.district === 'FIRST')
+      .sort((a, b) => (a.positionOrder || 0) - (b.positionOrder || 0)),
+    boardMembersSecond: allProfiles
+      .filter(p => p.positionCategory === 'BOARD_MEMBER' && p.district === 'SECOND')
+      .sort((a, b) => (a.positionOrder || 0) - (b.positionOrder || 0)),
+    exOfficioMembers: allProfiles
+      .filter(p => p.positionCategory === 'EX_OFFICIO')
+      .sort((a, b) => (a.positionOrder || 0) - (b.positionOrder || 0)),
+  }
+}
+
 export async function createProfile(data: Omit<Profile, 'id' | 'createdAt' | 'updatedAt'>): Promise<string> {
   const docRef = await addDoc(collection(db, COLLECTION), {
     ...data,

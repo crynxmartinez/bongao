@@ -34,6 +34,11 @@ export interface Profile {
   currentPosition?: string
   currentOrganization?: string
   
+  // Position Category (for filtering/grouping)
+  positionCategory?: 'GOVERNOR' | 'VICE_GOVERNOR' | 'BOARD_MEMBER' | 'EX_OFFICIO' | 'SP_SECRETARY' | 'DEPARTMENT_HEAD' | 'OTHER'
+  district?: 'FIRST' | 'SECOND'
+  positionOrder?: number
+  
   // Metadata
   isActive: boolean
   createdAt: Date | string
