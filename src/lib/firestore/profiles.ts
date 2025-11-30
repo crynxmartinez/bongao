@@ -22,16 +22,18 @@ const COLLECTION = 'profiles'
 // ============================================
 
 export async function getProfiles(): Promise<Profile[]> {
-  const q = query(
-    collection(db, COLLECTION),
-    where('isActive', '==', true),
-    orderBy('lastName', 'asc')
-  )
-  const snapshot = await getDocs(q)
-  return snapshot.docs.map((doc) => ({
+  // Simple query without compound index requirement
+  const snapshot = await getDocs(collection(db, COLLECTION))
+  let results = snapshot.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
   })) as Profile[]
+  
+  // Filter and sort in memory
+  results = results.filter(p => p.isActive !== false)
+  results.sort((a, b) => (a.lastName || '').localeCompare(b.lastName || ''))
+  
+  return results
 }
 
 export async function getProfileById(id: string): Promise<Profile | null> {
@@ -50,17 +52,18 @@ export async function getProfileBySlug(slug: string): Promise<Profile | null> {
 }
 
 export async function getProfilesByCategory(category: Profile['positionCategory']): Promise<Profile[]> {
-  const q = query(
-    collection(db, COLLECTION),
-    where('isActive', '==', true),
-    where('positionCategory', '==', category),
-    orderBy('positionOrder', 'asc')
-  )
-  const snapshot = await getDocs(q)
-  return snapshot.docs.map((doc) => ({
+  // Simple query without compound index requirement
+  const snapshot = await getDocs(collection(db, COLLECTION))
+  let results = snapshot.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
   })) as Profile[]
+  
+  // Filter and sort in memory
+  results = results.filter(p => p.isActive !== false && p.positionCategory === category)
+  results.sort((a, b) => (a.positionOrder || 0) - (b.positionOrder || 0))
+  
+  return results
 }
 
 export async function getProvincialOfficials(): Promise<{

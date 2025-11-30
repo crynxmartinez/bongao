@@ -30,16 +30,18 @@ const COLLECTION = 'municipalities'
 // ============================================
 
 export async function getMunicipalities(): Promise<Municipality[]> {
-  const q = query(
-    collection(db, COLLECTION),
-    where('isActive', '==', true),
-    orderBy('name', 'asc')
-  )
-  const snapshot = await getDocs(q)
-  return snapshot.docs.map((doc) => ({
+  // Simple query without compound index requirement
+  const snapshot = await getDocs(collection(db, COLLECTION))
+  let results = snapshot.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
   })) as Municipality[]
+  
+  // Filter and sort in memory
+  results = results.filter(m => m.isActive !== false)
+  results.sort((a, b) => a.name.localeCompare(b.name))
+  
+  return results
 }
 
 export async function getMunicipalityById(id: string): Promise<Municipality | null> {
