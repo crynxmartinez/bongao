@@ -169,7 +169,7 @@ export default async function HomePage() {
           <p className="text-2xl md:text-4xl lg:text-5xl font-light tracking-widest drop-shadow-xl mb-4">
             TO THE WORLD
           </p>
-          <p className="text-xl md:text-2xl lg:text-3xl italic text-yellow-400 drop-shadow-xl">
+          <p className="text-2xl md:text-3xl lg:text-4xl text-yellow-400 drop-shadow-xl" style={{ fontFamily: 'var(--font-cursive)' }}>
             GOByernong kaSali ang lahat!
           </p>
         </div>
