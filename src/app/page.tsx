@@ -148,10 +148,11 @@ export default async function HomePage() {
         </div>
       </header>
 
-      {/* Hero Section - Full Screen */}
+      {/* Hero Section - Full Screen minus headers */}
       <section 
-        className="relative h-screen w-full flex items-center justify-center text-white overflow-hidden"
+        className="relative w-full flex items-center justify-center text-white overflow-hidden"
         style={{
+          height: 'calc(100vh - 92px)',
           backgroundImage: 'url(https://storage.googleapis.com/msgsndr/xzA6eU8kOYmBuwFdr3CF/media/692c3036aaad917619d94776.jpeg)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
