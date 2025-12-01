@@ -1,7 +1,8 @@
 import Link from 'next/link'
-import { ArrowLeft, User } from 'lucide-react'
+import { User } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { getProvincialOfficials } from '@/lib/firestore/profiles'
+import { PublicHeader } from '@/components/layout/public-header'
 import type { Profile } from '@/types'
 
 // Official Card Component
@@ -81,15 +82,8 @@ export default async function SangguniangPanlalawiganPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-primary text-white py-4">
-        <div className="container mx-auto px-4">
-          <Link href="/" className="inline-flex items-center gap-2 text-white/80 hover:text-white transition-colors">
-            <ArrowLeft className="w-4 h-4" />
-            Back to Home
-          </Link>
-        </div>
-      </header>
+      {/* Navigation Header */}
+      <PublicHeader />
 
       {/* Hero */}
       <section className="bg-primary text-white py-12">
