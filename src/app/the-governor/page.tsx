@@ -51,3 +51,7 @@ export const metadata = {
   title: 'The Governor - Province of Tawi-Tawi',
   description: 'Official profile of the Governor of the Province of Tawi-Tawi.',
 }
+
+// Disable caching - always fetch fresh data
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
