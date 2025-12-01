@@ -37,7 +37,8 @@ export default async function AdminDashboard() {
     { name: 'Municipalities', value: municipalities.length.toString(), icon: MapPin, href: '/admin/municipalities', description: 'Municipal websites' },
     { name: 'Directories', value: directories.length.toString(), icon: FolderOpen, href: '/admin/directories', description: 'Government agencies' },
     { name: 'News Articles', value: news.length.toString(), icon: Newspaper, href: '/admin/news', description: 'Published articles' },
-    { name: 'Gazette', value: gazettes.length.toString(), icon: FileText, href: '/admin/gazette', description: 'Ordinances & Resolutions' },
+    // TODO: Add gazette page when implemented
+    // { name: 'Gazette', value: gazettes.length.toString(), icon: FileText, href: '/admin/gazette', description: 'Ordinances & Resolutions' },
   ]
   return (
     <div className="space-y-6">
@@ -98,7 +99,8 @@ export default async function AdminDashboard() {
                 </div>
               </div>
             </Link>
-            <Link 
+            {/* TODO: Add gazette upload when page is implemented */}
+            {/* <Link 
               href="/admin/gazette/upload" 
               className="block p-3 rounded-lg border hover:bg-gray-50 transition-colors"
             >
@@ -109,7 +111,7 @@ export default async function AdminDashboard() {
                   <p className="text-sm text-muted-foreground">Add ordinance or resolution</p>
                 </div>
               </div>
-            </Link>
+            </Link> */}
           </CardContent>
         </Card>
 
@@ -159,3 +161,7 @@ export default async function AdminDashboard() {
     </div>
   )
 }
+
+// Disable caching - always fetch fresh data
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
