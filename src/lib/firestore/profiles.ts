@@ -13,7 +13,7 @@ import {
   Timestamp,
 } from 'firebase/firestore'
 import { db } from '@/lib/firebase'
-import type { Profile, Position, Achievement, Education, ProfileImage } from '@/types'
+import type { Profile, Position, Achievement, Education, ProfileImage, ServicePeriod, Project, Legislation, Program } from '@/types'
 
 const COLLECTION = 'profiles'
 
@@ -323,5 +323,157 @@ export async function addGalleryImage(profileId: string, data: Omit<ProfileImage
 
 export async function deleteGalleryImage(profileId: string, imageId: string): Promise<void> {
   const docRef = doc(db, COLLECTION, profileId, 'gallery', imageId)
+  await deleteDoc(docRef)
+}
+
+// ============================================
+// SERVICE PERIODS SUBCOLLECTION (Years in Service)
+// ============================================
+
+export async function getServicePeriods(profileId: string): Promise<ServicePeriod[]> {
+  const q = query(
+    collection(db, COLLECTION, profileId, 'service-periods'),
+    orderBy('order', 'asc')
+  )
+  const snapshot = await getDocs(q)
+  return snapshot.docs.map((doc) => ({
+    id: doc.id,
+    profileId,
+    ...doc.data(),
+  })) as ServicePeriod[]
+}
+
+export async function addServicePeriod(profileId: string, data: Omit<ServicePeriod, 'id' | 'profileId' | 'createdAt'>): Promise<string> {
+  const docRef = await addDoc(collection(db, COLLECTION, profileId, 'service-periods'), {
+    ...data,
+    createdAt: Timestamp.now(),
+  })
+  return docRef.id
+}
+
+export async function updateServicePeriod(profileId: string, periodId: string, data: Partial<ServicePeriod>): Promise<void> {
+  const docRef = doc(db, COLLECTION, profileId, 'service-periods', periodId)
+  await updateDoc(docRef, data)
+}
+
+export async function deleteServicePeriod(profileId: string, periodId: string): Promise<void> {
+  const docRef = doc(db, COLLECTION, profileId, 'service-periods', periodId)
+  await deleteDoc(docRef)
+}
+
+// Calculate total years in service (oldest year to latest/current year)
+export function calculateYearsInService(periods: ServicePeriod[]): number {
+  if (periods.length === 0) return 0
+  
+  const currentYear = new Date().getFullYear()
+  const years = periods.flatMap(p => [p.yearStart, p.yearEnd || currentYear])
+  const oldest = Math.min(...years)
+  const latest = Math.max(...years)
+  
+  return latest - oldest
+}
+
+// ============================================
+// PROJECTS SUBCOLLECTION
+// ============================================
+
+export async function getProjects(profileId: string): Promise<Project[]> {
+  const q = query(
+    collection(db, COLLECTION, profileId, 'projects'),
+    orderBy('order', 'asc')
+  )
+  const snapshot = await getDocs(q)
+  return snapshot.docs.map((doc) => ({
+    id: doc.id,
+    profileId,
+    ...doc.data(),
+  })) as Project[]
+}
+
+export async function addProject(profileId: string, data: Omit<Project, 'id' | 'profileId' | 'createdAt'>): Promise<string> {
+  const docRef = await addDoc(collection(db, COLLECTION, profileId, 'projects'), {
+    ...data,
+    createdAt: Timestamp.now(),
+  })
+  return docRef.id
+}
+
+export async function updateProject(profileId: string, projectId: string, data: Partial<Project>): Promise<void> {
+  const docRef = doc(db, COLLECTION, profileId, 'projects', projectId)
+  await updateDoc(docRef, data)
+}
+
+export async function deleteProject(profileId: string, projectId: string): Promise<void> {
+  const docRef = doc(db, COLLECTION, profileId, 'projects', projectId)
+  await deleteDoc(docRef)
+}
+
+// ============================================
+// LEGISLATION SUBCOLLECTION
+// ============================================
+
+export async function getLegislation(profileId: string): Promise<Legislation[]> {
+  const q = query(
+    collection(db, COLLECTION, profileId, 'legislation'),
+    orderBy('order', 'asc')
+  )
+  const snapshot = await getDocs(q)
+  return snapshot.docs.map((doc) => ({
+    id: doc.id,
+    profileId,
+    ...doc.data(),
+  })) as Legislation[]
+}
+
+export async function addLegislation(profileId: string, data: Omit<Legislation, 'id' | 'profileId' | 'createdAt'>): Promise<string> {
+  const docRef = await addDoc(collection(db, COLLECTION, profileId, 'legislation'), {
+    ...data,
+    createdAt: Timestamp.now(),
+  })
+  return docRef.id
+}
+
+export async function updateLegislation(profileId: string, legislationId: string, data: Partial<Legislation>): Promise<void> {
+  const docRef = doc(db, COLLECTION, profileId, 'legislation', legislationId)
+  await updateDoc(docRef, data)
+}
+
+export async function deleteLegislation(profileId: string, legislationId: string): Promise<void> {
+  const docRef = doc(db, COLLECTION, profileId, 'legislation', legislationId)
+  await deleteDoc(docRef)
+}
+
+// ============================================
+// PROGRAMS SUBCOLLECTION
+// ============================================
+
+export async function getPrograms(profileId: string): Promise<Program[]> {
+  const q = query(
+    collection(db, COLLECTION, profileId, 'programs'),
+    orderBy('order', 'asc')
+  )
+  const snapshot = await getDocs(q)
+  return snapshot.docs.map((doc) => ({
+    id: doc.id,
+    profileId,
+    ...doc.data(),
+  })) as Program[]
+}
+
+export async function addProgram(profileId: string, data: Omit<Program, 'id' | 'profileId' | 'createdAt'>): Promise<string> {
+  const docRef = await addDoc(collection(db, COLLECTION, profileId, 'programs'), {
+    ...data,
+    createdAt: Timestamp.now(),
+  })
+  return docRef.id
+}
+
+export async function updateProgram(profileId: string, programId: string, data: Partial<Program>): Promise<void> {
+  const docRef = doc(db, COLLECTION, profileId, 'programs', programId)
+  await updateDoc(docRef, data)
+}
+
+export async function deleteProgram(profileId: string, programId: string): Promise<void> {
+  const docRef = doc(db, COLLECTION, profileId, 'programs', programId)
   await deleteDoc(docRef)
 }

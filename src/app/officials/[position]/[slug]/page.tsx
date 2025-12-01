@@ -8,17 +8,27 @@ import {
   Award,
   GraduationCap,
   Briefcase,
-  Calendar
+  Calendar,
+  Clock,
+  FolderKanban,
+  ScrollText,
+  Rocket
 } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { PublicHeader } from '@/components/layout/public-header'
+import { ProfileStatsCards } from '@/components/profile/stats-cards'
 import { 
   getProfileByPositionAndSlug, 
   getPositionFromUrlSlug,
   getAchievements,
   getEducation,
-  getPositions
+  getPositions,
+  getServicePeriods,
+  getProjects,
+  getLegislation,
+  getPrograms,
+  calculateYearsInService
 } from '@/lib/firestore/profiles'
 
 interface PageProps {
@@ -58,11 +68,18 @@ export default async function OfficialProfilePage({ params }: PageProps) {
   }
 
   // Fetch related data
-  const [achievements, education, positions] = await Promise.all([
+  const [achievements, education, positions, servicePeriods, projects, legislation, programs] = await Promise.all([
     getAchievements(profile.id),
     getEducation(profile.id),
     getPositions(profile.id),
+    getServicePeriods(profile.id),
+    getProjects(profile.id),
+    getLegislation(profile.id),
+    getPrograms(profile.id),
   ])
+
+  // Calculate years in service
+  const yearsInService = calculateYearsInService(servicePeriods)
 
   const fullName = `${profile.firstName || ''} ${profile.middleName || ''} ${profile.lastName || ''} ${profile.suffix || ''}`.trim()
   const positionTitle = profile.currentPosition || POSITION_DISPLAY_NAMES[profile.positionCategory || 'OTHER']
@@ -115,6 +132,18 @@ export default async function OfficialProfilePage({ params }: PageProps) {
 
       {/* Content */}
       <div className="container mx-auto px-4 -mt-24">
+        {/* Stats Cards */}
+        <ProfileStatsCards
+          profile={profile}
+          yearsInService={yearsInService}
+          servicePeriods={servicePeriods}
+          projects={projects}
+          awards={achievements}
+          legislation={legislation}
+          programs={programs}
+          education={education}
+        />
+
         <div className="grid lg:grid-cols-3 gap-6">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">

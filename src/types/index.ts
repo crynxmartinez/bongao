@@ -40,6 +40,14 @@ export interface Profile {
   municipalitySlug?: string  // For municipal officials (bongao, mapun, sibutu, etc.)
   positionOrder?: number
   
+  // Stat Card Visibility Toggles
+  showYearsInService?: boolean
+  showProjects?: boolean
+  showAwards?: boolean
+  showLegislation?: boolean
+  showPrograms?: boolean
+  showEducation?: boolean
+  
   // Metadata
   isActive: boolean
   createdAt: Date | string
@@ -90,6 +98,53 @@ export interface ProfileImage {
   url: string
   caption?: string
   order: number
+}
+
+// Service Period (Years in Service)
+export interface ServicePeriod {
+  id: string
+  profileId: string
+  yearStart: number
+  yearEnd?: number  // null/undefined = Present
+  title: string     // e.g., "Vice Governor", "Governor"
+  order: number
+  createdAt?: Date | string
+}
+
+// Project
+export interface Project {
+  id: string
+  profileId: string
+  name: string
+  description?: string
+  details?: string
+  year?: number
+  order: number
+  createdAt?: Date | string
+}
+
+// Legislation (for SP members)
+export interface Legislation {
+  id: string
+  profileId: string
+  title: string
+  type: 'ORDINANCE' | 'RESOLUTION'
+  number?: string
+  year?: number
+  description?: string
+  order: number
+  createdAt?: Date | string
+}
+
+// Program/Initiative
+export interface Program {
+  id: string
+  profileId: string
+  name: string
+  description?: string
+  status: 'ONGOING' | 'COMPLETED' | 'PLANNED'
+  order: number
+  createdAt?: Date | string
 }
 
 // ============================================

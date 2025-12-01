@@ -12,6 +12,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { getMunicipalities } from '@/lib/firestore/municipalities'
+import { getProfilesByCategory, getPositionUrlSlug } from '@/lib/firestore/profiles'
 
 // Navigation structure matching original site
 const provinceDropdown = [
@@ -51,14 +52,31 @@ const agenda = [
 ]
 
 export default async function HomePage() {
-  // Fetch municipalities from database
+  // Fetch municipalities and Governor/Vice Governor from database
   let municipalities: Awaited<ReturnType<typeof getMunicipalities>> = []
+  let governor: Awaited<ReturnType<typeof getProfilesByCategory>>[0] | null = null
+  let viceGovernor: Awaited<ReturnType<typeof getProfilesByCategory>>[0] | null = null
   
   try {
-    municipalities = await getMunicipalities()
+    const [muniData, governors, viceGovernors] = await Promise.all([
+      getMunicipalities(),
+      getProfilesByCategory('GOVERNOR'),
+      getProfilesByCategory('VICE_GOVERNOR'),
+    ])
+    municipalities = muniData
+    governor = governors[0] || null
+    viceGovernor = viceGovernors[0] || null
   } catch (error) {
-    console.error('Failed to fetch municipalities:', error)
+    console.error('Failed to fetch data:', error)
   }
+
+  // Build Governor profile URL
+  const governorUrl = governor 
+    ? `/officials/${getPositionUrlSlug('GOVERNOR')}/${governor.slug}` 
+    : '/the-governor'
+  const viceGovernorUrl = viceGovernor 
+    ? `/officials/${getPositionUrlSlug('VICE_GOVERNOR')}/${viceGovernor.slug}` 
+    : null
   return (
     <div className="min-h-screen">
       {/* Top Bar - Black */}
@@ -179,17 +197,83 @@ export default async function HomePage() {
 
         {/* Governor and Vice Governor - Full Width at Bottom */}
         <div className="absolute bottom-0 left-0 right-0 z-10">
-          <Image 
-            src="https://storage.googleapis.com/msgsndr/xzA6eU8kOYmBuwFdr3CF/media/692c2faf82f4c5c37d1baacc.png"
-            alt="Governor Yshmael Mang Sali and Vice Governor Al-Syed Sali"
-            width={1920}
-            height={800}
-            className="w-full h-auto object-contain object-bottom"
-            style={{ maxHeight: '75vh' }}
-            priority
-          />
+          <Link href={governorUrl} className="block cursor-pointer hover:opacity-95 transition-opacity">
+            <Image 
+              src="https://storage.googleapis.com/msgsndr/xzA6eU8kOYmBuwFdr3CF/media/692c2faf82f4c5c37d1baacc.png"
+              alt={governor ? `Governor ${governor.firstName} ${governor.lastName}` : "Governor of Tawi-Tawi"}
+              width={1920}
+              height={800}
+              className="w-full h-auto object-contain object-bottom"
+              style={{ maxHeight: '75vh' }}
+              priority
+            />
+          </Link>
         </div>
       </section>
+
+      {/* Governor Quick Info Section */}
+      {governor && (
+        <section className="py-8 bg-white border-b">
+          <div className="container mx-auto px-4">
+            <div className="flex flex-col md:flex-row items-center justify-center gap-6">
+              <Link href={governorUrl} className="flex items-center gap-4 group">
+                {governor.profileImage ? (
+                  <Image
+                    src={governor.profileImage}
+                    alt={`Governor ${governor.firstName} ${governor.lastName}`}
+                    width={80}
+                    height={80}
+                    className="w-20 h-20 rounded-full object-cover border-4 border-primary shadow-lg group-hover:border-primary/80 transition-colors"
+                  />
+                ) : (
+                  <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center border-4 border-primary">
+                    <span className="text-2xl font-bold text-primary">
+                      {governor.firstName?.[0] || 'G'}
+                    </span>
+                  </div>
+                )}
+                <div>
+                  <p className="text-sm text-muted-foreground uppercase tracking-wider">Governor</p>
+                  <h3 className="text-xl font-bold text-primary group-hover:underline">
+                    Hon. {governor.firstName} {governor.lastName} {governor.suffix || ''}
+                  </h3>
+                  <p className="text-sm text-muted-foreground">Province of Tawi-Tawi</p>
+                </div>
+              </Link>
+              
+              {viceGovernor && viceGovernorUrl && (
+                <>
+                  <div className="hidden md:block w-px h-16 bg-gray-300" />
+                  <Link href={viceGovernorUrl} className="flex items-center gap-4 group">
+                    {viceGovernor.profileImage ? (
+                      <Image
+                        src={viceGovernor.profileImage}
+                        alt={`Vice Governor ${viceGovernor.firstName} ${viceGovernor.lastName}`}
+                        width={80}
+                        height={80}
+                        className="w-20 h-20 rounded-full object-cover border-4 border-primary/70 shadow-lg group-hover:border-primary transition-colors"
+                      />
+                    ) : (
+                      <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center border-4 border-primary/70">
+                        <span className="text-2xl font-bold text-primary">
+                          {viceGovernor.firstName?.[0] || 'V'}
+                        </span>
+                      </div>
+                    )}
+                    <div>
+                      <p className="text-sm text-muted-foreground uppercase tracking-wider">Vice Governor</p>
+                      <h3 className="text-xl font-bold text-primary group-hover:underline">
+                        Hon. {viceGovernor.firstName} {viceGovernor.lastName} {viceGovernor.suffix || ''}
+                      </h3>
+                      <p className="text-sm text-muted-foreground">Province of Tawi-Tawi</p>
+                    </div>
+                  </Link>
+                </>
+              )}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* 11-Point Agenda */}
       <section className="py-16 bg-primary text-white">
