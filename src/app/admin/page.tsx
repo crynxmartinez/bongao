@@ -1,11 +1,11 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Users, Building2, FolderOpen, Newspaper, FileText, MapPin } from 'lucide-react'
+import { Users, Building2, FolderOpen, Newspaper, MapPin, Clock } from 'lucide-react'
 import Link from 'next/link'
 import { getProfiles } from '@/lib/firestore/profiles'
 import { getMunicipalities } from '@/lib/firestore/municipalities'
 import { getDirectories } from '@/lib/firestore/directories'
 import { getProvincialNews } from '@/lib/firestore/news'
-import { getGazettes } from '@/lib/firestore/gazette'
+import { getRecentActivityLogs, type ActivityLog } from '@/lib/firestore/activity-logs'
 
 export default async function AdminDashboard() {
   // Fetch actual counts from database
@@ -13,7 +13,8 @@ export default async function AdminDashboard() {
   let municipalities: Awaited<ReturnType<typeof getMunicipalities>> = []
   let directories: Awaited<ReturnType<typeof getDirectories>> = []
   let news: Awaited<ReturnType<typeof getProvincialNews>> = []
-  let gazettes: Awaited<ReturnType<typeof getGazettes>> = []
+  let activityLogs: ActivityLog[] = []
+  let fetchError: string | null = null
 
   try {
     const results = await Promise.all([
@@ -21,15 +22,16 @@ export default async function AdminDashboard() {
       getMunicipalities(),
       getDirectories(),
       getProvincialNews(false),
-      getGazettes(),
+      getRecentActivityLogs(5),
     ])
     profiles = results[0]
     municipalities = results[1]
     directories = results[2]
     news = results[3]
-    gazettes = results[4]
+    activityLogs = results[4]
   } catch (error) {
     console.error('Failed to fetch dashboard data:', error)
+    fetchError = error instanceof Error ? error.message : 'Unknown error'
   }
 
   const stats = [
@@ -40,6 +42,19 @@ export default async function AdminDashboard() {
     // TODO: Add gazette page when implemented
     // { name: 'Gazette', value: gazettes.length.toString(), icon: FileText, href: '/admin/gazette', description: 'Ordinances & Resolutions' },
   ]
+  const formatTimeAgo = (date: Date) => {
+    const now = new Date()
+    const diffMs = now.getTime() - new Date(date).getTime()
+    const diffMins = Math.floor(diffMs / 60000)
+    const diffHours = Math.floor(diffMs / 3600000)
+    const diffDays = Math.floor(diffMs / 86400000)
+    
+    if (diffMins < 1) return 'Just now'
+    if (diffMins < 60) return `${diffMins}m ago`
+    if (diffHours < 24) return `${diffHours}h ago`
+    return `${diffDays}d ago`
+  }
+
   return (
     <div className="space-y-6">
       <div>
@@ -48,6 +63,17 @@ export default async function AdminDashboard() {
           Welcome to the Tawi-Tawi Provincial Government CMS
         </p>
       </div>
+
+      {/* Error Display */}
+      {fetchError && (
+        <Card className="border-red-200 bg-red-50">
+          <CardContent className="py-4">
+            <p className="text-red-600 text-sm">
+              <strong>Error loading data:</strong> {fetchError}
+            </p>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Stats Grid */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -121,10 +147,30 @@ export default async function AdminDashboard() {
             <CardDescription>Latest changes in the system</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="text-center py-8 text-muted-foreground">
-              <p>No recent activity</p>
-              <p className="text-sm">Activity will appear here once you start making changes</p>
-            </div>
+            {activityLogs.length > 0 ? (
+              <div className="space-y-3">
+                {activityLogs.map((log) => (
+                  <div key={log.id} className="flex items-start gap-3 text-sm">
+                    <Clock className="h-4 w-4 text-muted-foreground mt-0.5" />
+                    <div className="flex-1">
+                      <p>
+                        <span className="font-medium">{log.userName}</span>
+                        {' '}{log.action}{' '}
+                        <span className="font-medium">{log.entityName}</span>
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {formatTimeAgo(log.createdAt)}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-8 text-muted-foreground">
+                <p>No recent activity</p>
+                <p className="text-sm">Activity will appear here once you start making changes</p>
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
