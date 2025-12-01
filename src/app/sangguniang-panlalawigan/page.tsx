@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { User } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
-import { getProvincialOfficials } from '@/lib/firestore/profiles'
+import { getProvincialOfficials, getPositionUrlSlug } from '@/lib/firestore/profiles'
 import { PublicHeader } from '@/components/layout/public-header'
 import type { Profile } from '@/types'
 
@@ -15,8 +15,11 @@ function OfficialCard({ profile, showPosition = true }: { profile: Profile; show
     profile.suffix,
   ].filter(Boolean).join(' ')
 
+  const positionSlug = getPositionUrlSlug(profile.positionCategory)
+  const profileUrl = `/officials/${positionSlug}/${profile.slug}`
+
   return (
-    <Link href={`/profiles/${profile.slug}`}>
+    <Link href={profileUrl}>
       <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer group">
         <CardContent className="p-6 text-center">
           {/* Photo or Initials */}
@@ -182,3 +185,7 @@ export const metadata = {
   title: 'Sangguniang Panlalawigan',
   description: 'Provincial Legislative Body of Tawi-Tawi - Board Members and Officials',
 }
+
+// Disable caching - always fetch fresh data
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
