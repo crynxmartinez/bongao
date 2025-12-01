@@ -7,12 +7,15 @@ import {
   Clock, 
   ChevronRight,
   ChevronDown,
-  Menu
+  Menu,
+  Newspaper
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { getMunicipalities } from '@/lib/firestore/municipalities'
 import { getProfilesByCategory, getPositionUrlSlug } from '@/lib/firestore/profiles'
+import { getFeaturedNews } from '@/lib/firestore/news'
+import type { ProvincialNews } from '@/types'
 
 // Navigation structure matching original site
 const provinceDropdown = [
@@ -52,20 +55,23 @@ const agenda = [
 ]
 
 export default async function HomePage() {
-  // Fetch municipalities and Governor/Vice Governor from database
+  // Fetch municipalities, Governor/Vice Governor, and featured news from database
   let municipalities: Awaited<ReturnType<typeof getMunicipalities>> = []
   let governor: Awaited<ReturnType<typeof getProfilesByCategory>>[0] | null = null
   let viceGovernor: Awaited<ReturnType<typeof getProfilesByCategory>>[0] | null = null
+  let featuredNews: ProvincialNews[] = []
   
   try {
-    const [muniData, governors, viceGovernors] = await Promise.all([
+    const [muniData, governors, viceGovernors, newsData] = await Promise.all([
       getMunicipalities(),
       getProfilesByCategory('GOVERNOR'),
       getProfilesByCategory('VICE_GOVERNOR'),
+      getFeaturedNews(3),
     ])
     municipalities = muniData
     governor = governors[0] || null
     viceGovernor = viceGovernors[0] || null
+    featuredNews = newsData
   } catch (error) {
     console.error('Failed to fetch data:', error)
   }
@@ -211,69 +217,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Governor Quick Info Section */}
-      {governor && (
-        <section className="py-8 bg-white border-b">
-          <div className="container mx-auto px-4">
-            <div className="flex flex-col md:flex-row items-center justify-center gap-6">
-              <Link href={governorUrl} className="flex items-center gap-4 group">
-                {governor.profileImage ? (
-                  <Image
-                    src={governor.profileImage}
-                    alt={`Governor ${governor.firstName} ${governor.lastName}`}
-                    width={80}
-                    height={80}
-                    className="w-20 h-20 rounded-full object-cover border-4 border-primary shadow-lg group-hover:border-primary/80 transition-colors"
-                  />
-                ) : (
-                  <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center border-4 border-primary">
-                    <span className="text-2xl font-bold text-primary">
-                      {governor.firstName?.[0] || 'G'}
-                    </span>
-                  </div>
-                )}
-                <div>
-                  <p className="text-sm text-muted-foreground uppercase tracking-wider">Governor</p>
-                  <h3 className="text-xl font-bold text-primary group-hover:underline">
-                    Hon. {governor.firstName} {governor.lastName} {governor.suffix || ''}
-                  </h3>
-                  <p className="text-sm text-muted-foreground">Province of Tawi-Tawi</p>
-                </div>
-              </Link>
-              
-              {viceGovernor && viceGovernorUrl && (
-                <>
-                  <div className="hidden md:block w-px h-16 bg-gray-300" />
-                  <Link href={viceGovernorUrl} className="flex items-center gap-4 group">
-                    {viceGovernor.profileImage ? (
-                      <Image
-                        src={viceGovernor.profileImage}
-                        alt={`Vice Governor ${viceGovernor.firstName} ${viceGovernor.lastName}`}
-                        width={80}
-                        height={80}
-                        className="w-20 h-20 rounded-full object-cover border-4 border-primary/70 shadow-lg group-hover:border-primary transition-colors"
-                      />
-                    ) : (
-                      <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center border-4 border-primary/70">
-                        <span className="text-2xl font-bold text-primary">
-                          {viceGovernor.firstName?.[0] || 'V'}
-                        </span>
-                      </div>
-                    )}
-                    <div>
-                      <p className="text-sm text-muted-foreground uppercase tracking-wider">Vice Governor</p>
-                      <h3 className="text-xl font-bold text-primary group-hover:underline">
-                        Hon. {viceGovernor.firstName} {viceGovernor.lastName} {viceGovernor.suffix || ''}
-                      </h3>
-                      <p className="text-sm text-muted-foreground">Province of Tawi-Tawi</p>
-                    </div>
-                  </Link>
-                </>
-              )}
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* 11-Point Agenda */}
       <section className="py-16 bg-primary text-white">
@@ -324,6 +267,66 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Featured News */}
+      {featuredNews.length > 0 && (
+        <section className="py-16 bg-gray-50">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold mb-4">Featured News</h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                Stay updated with the latest news and announcements from the Provincial Government of Tawi-Tawi.
+              </p>
+            </div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {featuredNews.map((news) => (
+                <Link key={news.id} href={`/news/${news.slug}`}>
+                  <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer group overflow-hidden">
+                    {news.bannerImage && (
+                      <div className="relative h-48 overflow-hidden">
+                        <Image
+                          src={news.bannerImage}
+                          alt={news.title}
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                      </div>
+                    )}
+                    <CardContent className="p-4">
+                      <p className="text-xs text-muted-foreground mb-2">
+                        {news.publishedAt 
+                          ? new Date(news.publishedAt).toLocaleDateString('en-US', { 
+                              year: 'numeric', 
+                              month: 'long', 
+                              day: 'numeric' 
+                            })
+                          : 'Recently'
+                        }
+                      </p>
+                      <h3 className="font-semibold text-lg mb-2 group-hover:text-primary transition-colors line-clamp-2">
+                        {news.title}
+                      </h3>
+                      {news.excerpt && (
+                        <p className="text-sm text-muted-foreground line-clamp-2">
+                          {news.excerpt}
+                        </p>
+                      )}
+                    </CardContent>
+                  </Card>
+                </Link>
+              ))}
+            </div>
+            <div className="text-center mt-8">
+              <Link href="/news">
+                <Button variant="outline" className="group">
+                  View All News
+                  <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Contact Info */}
       <section className="py-16">
