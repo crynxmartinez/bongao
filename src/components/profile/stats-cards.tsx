@@ -148,14 +148,14 @@ export function ProfileStatsCards({
 
       {/* Years in Service Modal */}
       <Dialog open={activeModal === 'yearsInService'} onOpenChange={() => setActiveModal(null)}>
-        <DialogContent className="max-w-2xl">
+        <DialogContent className="max-w-5xl w-[95vw]">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <Clock className="w-5 h-5 text-primary" />
               Years in Service ({yearsInService}+ years)
             </DialogTitle>
           </DialogHeader>
-          <div className="space-y-2 max-h-[70vh] overflow-y-auto">
+          <div className="space-y-2 max-h-[80vh] overflow-y-auto">
             {servicePeriods.map((period, index) => (
               <div key={period.id || index} className="flex gap-4 border-l-2 border-primary pl-4 py-2">
                 <div>
@@ -172,14 +172,14 @@ export function ProfileStatsCards({
 
       {/* Projects Modal */}
       <Dialog open={activeModal === 'projects'} onOpenChange={() => setActiveModal(null)}>
-        <DialogContent className="max-w-2xl">
+        <DialogContent className="max-w-5xl w-[95vw]">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <FolderKanban className="w-5 h-5 text-primary" />
               Projects ({projects.length})
             </DialogTitle>
           </DialogHeader>
-          <div className="space-y-2 max-h-[70vh] overflow-y-auto">
+          <div className="space-y-2 max-h-[80vh] overflow-y-auto">
             {projects.map((project, index) => {
               const itemId = `project-${project.id || index}`
               const isExpanded = expandedItems.has(itemId)
@@ -216,14 +216,14 @@ export function ProfileStatsCards({
 
       {/* Awards Modal */}
       <Dialog open={activeModal === 'awards'} onOpenChange={() => setActiveModal(null)}>
-        <DialogContent className="max-w-2xl">
+        <DialogContent className="max-w-5xl w-[95vw]">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <Award className="w-5 h-5 text-primary" />
               Awards & Recognition ({awards.length})
             </DialogTitle>
           </DialogHeader>
-          <div className="space-y-2 max-h-[70vh] overflow-y-auto">
+          <div className="space-y-2 max-h-[80vh] overflow-y-auto">
             {awards.map((award, index) => {
               const itemId = `award-${award.id || index}`
               const isExpanded = expandedItems.has(itemId)
@@ -260,14 +260,14 @@ export function ProfileStatsCards({
 
       {/* Legislation Modal */}
       <Dialog open={activeModal === 'legislation'} onOpenChange={() => setActiveModal(null)}>
-        <DialogContent className="max-w-2xl">
+        <DialogContent className="max-w-5xl w-[95vw]">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <ScrollText className="w-5 h-5 text-primary" />
               Legislation Authored ({legislation.length})
             </DialogTitle>
           </DialogHeader>
-          <div className="space-y-2 max-h-[70vh] overflow-y-auto">
+          <div className="space-y-2 max-h-[80vh] overflow-y-auto">
             {legislation.map((leg, index) => {
               const itemId = `leg-${leg.id || index}`
               const isExpanded = expandedItems.has(itemId)
@@ -312,14 +312,14 @@ export function ProfileStatsCards({
 
       {/* Programs Modal */}
       <Dialog open={activeModal === 'programs'} onOpenChange={() => setActiveModal(null)}>
-        <DialogContent className="max-w-2xl">
+        <DialogContent className="max-w-5xl w-[95vw]">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <Rocket className="w-5 h-5 text-primary" />
               Programs & Initiatives ({programs.length})
             </DialogTitle>
           </DialogHeader>
-          <div className="space-y-2 max-h-[70vh] overflow-y-auto">
+          <div className="space-y-2 max-h-[80vh] overflow-y-auto">
             {programs.map((prog, index) => {
               const itemId = `prog-${prog.id || index}`
               const isExpanded = expandedItems.has(itemId)
@@ -362,14 +362,14 @@ export function ProfileStatsCards({
 
       {/* Education Modal */}
       <Dialog open={activeModal === 'education'} onOpenChange={() => setActiveModal(null)}>
-        <DialogContent className="max-w-2xl">
+        <DialogContent className="max-w-5xl w-[95vw]">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <GraduationCap className="w-5 h-5 text-primary" />
               Education ({education.length})
             </DialogTitle>
           </DialogHeader>
-          <div className="space-y-2 max-h-[70vh] overflow-y-auto">
+          <div className="space-y-2 max-h-[80vh] overflow-y-auto">
             {education.map((edu, index) => (
               <div key={edu.id || index} className="border rounded-lg p-3">
                 <h4 className="font-semibold">{edu.degree}</h4>
