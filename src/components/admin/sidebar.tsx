@@ -5,12 +5,8 @@ import { usePathname, useRouter } from 'next/navigation'
 import {
   LayoutDashboard,
   Users,
-  Building2,
   FolderOpen,
   Newspaper,
-  FileText,
-  Image,
-  Settings,
   LogOut,
   ChevronDown,
   MapPin,
@@ -33,14 +29,16 @@ const navigation = [
   { name: 'Municipalities', href: '/admin/municipalities', icon: MapPin },
   { name: 'Directories', href: '/admin/directories', icon: FolderOpen },
   { name: 'News', href: '/admin/news', icon: Newspaper },
-  { name: 'Gazette', href: '/admin/gazette', icon: FileText },
-  { name: 'Media', href: '/admin/media', icon: Image },
+  // TODO: Add these pages when implemented
+  // { name: 'Gazette', href: '/admin/gazette', icon: FileText },
+  // { name: 'Media', href: '/admin/media', icon: Image },
 ]
 
-const settingsNav = [
-  { name: 'Site Settings', href: '/admin/settings', icon: Settings },
-  { name: 'Users', href: '/admin/users', icon: Users },
-]
+// TODO: Add these pages when implemented
+// const settingsNav = [
+//   { name: 'Site Settings', href: '/admin/settings', icon: Settings },
+//   { name: 'Users', href: '/admin/users', icon: Users },
+// ]
 
 export default function AdminSidebar({ user }: AdminSidebarProps) {
   const pathname = usePathname()
@@ -125,8 +123,8 @@ export default function AdminSidebar({ user }: AdminSidebarProps) {
               </ul>
             </li>
 
-            {/* Settings Section */}
-            {(user.role === 'SUPER_ADMIN' || user.role === 'PROVINCIAL_ADMIN') && (
+            {/* TODO: Settings Section - Add when pages are implemented */}
+            {/* {(user.role === 'SUPER_ADMIN' || user.role === 'PROVINCIAL_ADMIN') && (
               <li>
                 <div className="text-xs font-semibold leading-6 text-gray-400 uppercase">
                   Settings
@@ -150,7 +148,7 @@ export default function AdminSidebar({ user }: AdminSidebarProps) {
                   ))}
                 </ul>
               </li>
-            )}
+            )} */}
 
             {/* Logout */}
             <li className="mt-auto">
