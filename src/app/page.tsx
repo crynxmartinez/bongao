@@ -415,3 +415,7 @@ export default async function HomePage() {
     </div>
   )
 }
+
+// Disable caching - always fetch fresh data
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
