@@ -14,6 +14,26 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 import { Separator } from '@/components/ui/separator'
 import { toast } from 'sonner'
 import type { Profile, ServicePeriod, Project, Legislation, Program, Achievement, Education } from '@/types'
+import {
+  getServicePeriods,
+  addServicePeriod,
+  deleteServicePeriod,
+  getProjects,
+  addProject,
+  deleteProject,
+  getLegislation,
+  addLegislation,
+  deleteLegislation,
+  getPrograms,
+  addProgram,
+  deleteProgram,
+  getAchievements,
+  addAchievement,
+  deleteAchievement,
+  getEducation,
+  addEducation,
+  deleteEducation,
+} from '@/lib/firestore/profiles'
 
 export default function EditProfilePage() {
   const router = useRouter()
@@ -86,11 +106,36 @@ export default function EditProfilePage() {
 
   const fetchProfile = async () => {
     try {
-      const response = await fetch(`/api/profiles/${params.id}`)
+      const profileId = params.id as string
+      const response = await fetch(`/api/profiles/${profileId}`)
       const data = await response.json()
       
       if (data.success) {
         setFormData(data.profile)
+        
+        // Fetch subcollection data
+        const [
+          servicePeriodData,
+          projectData,
+          awardData,
+          legislationData,
+          programData,
+          educationData,
+        ] = await Promise.all([
+          getServicePeriods(profileId),
+          getProjects(profileId),
+          getAchievements(profileId),
+          getLegislation(profileId),
+          getPrograms(profileId),
+          getEducation(profileId),
+        ])
+        
+        setServicePeriods(servicePeriodData)
+        setProjects(projectData)
+        setAwards(awardData)
+        setLegislation(legislationData)
+        setPrograms(programData)
+        setEducation(educationData)
       } else {
         toast.error('Profile not found')
         router.push('/admin/profiles')
@@ -133,6 +178,12 @@ export default function EditProfilePage() {
       const data = await response.json()
 
       if (data.success) {
+        // Get the profile ID (either from response for new, or from params for existing)
+        const profileId = isNew ? data.id : (params.id as string)
+        
+        // Save subcollection data
+        await saveSubcollectionData(profileId)
+        
         toast.success(isNew ? 'Profile created successfully' : 'Profile updated successfully')
         router.push('/admin/profiles')
       } else {
@@ -144,6 +195,48 @@ export default function EditProfilePage() {
     } finally {
       setIsSaving(false)
     }
+  }
+
+  const saveSubcollectionData = async (profileId: string) => {
+    // For simplicity, we'll delete all existing items and re-add them
+    // This ensures clean state without tracking individual changes
+    
+    // Get existing data to delete
+    const [
+      existingServicePeriods,
+      existingProjects,
+      existingAwards,
+      existingLegislation,
+      existingPrograms,
+      existingEducation,
+    ] = await Promise.all([
+      getServicePeriods(profileId),
+      getProjects(profileId),
+      getAchievements(profileId),
+      getLegislation(profileId),
+      getPrograms(profileId),
+      getEducation(profileId),
+    ])
+
+    // Delete existing items
+    await Promise.all([
+      ...existingServicePeriods.map(item => deleteServicePeriod(profileId, item.id)),
+      ...existingProjects.map(item => deleteProject(profileId, item.id)),
+      ...existingAwards.map(item => deleteAchievement(profileId, item.id)),
+      ...existingLegislation.map(item => deleteLegislation(profileId, item.id)),
+      ...existingPrograms.map(item => deleteProgram(profileId, item.id)),
+      ...existingEducation.map(item => deleteEducation(profileId, item.id)),
+    ])
+
+    // Add new items
+    await Promise.all([
+      ...servicePeriods.map((item, index) => addServicePeriod(profileId, { ...item, order: index })),
+      ...projects.map((item, index) => addProject(profileId, { ...item, order: index })),
+      ...awards.map((item, index) => addAchievement(profileId, { ...item, order: index })),
+      ...legislation.map((item, index) => addLegislation(profileId, { ...item, order: index })),
+      ...programs.map((item, index) => addProgram(profileId, { ...item, order: index })),
+      ...education.map((item, index) => addEducation(profileId, { ...item, order: index })),
+    ])
   }
 
   if (isLoading) {
