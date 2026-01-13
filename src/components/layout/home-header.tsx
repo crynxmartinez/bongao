@@ -41,7 +41,7 @@ const mainNavLinks = [
   { name: 'Contact Us', href: '/contact-us' },
 ]
 
-export function PublicHeader() {
+export function HomeHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [provinceExpanded, setProvinceExpanded] = useState(false)
   const [municipalitiesExpanded, setMunicipalitiesExpanded] = useState(false)
@@ -54,7 +54,7 @@ export function PublicHeader() {
 
   return (
     <>
-      {/* Top Bar - Black - Hidden on very small screens */}
+      {/* Top Bar - Black */}
       <div className="bg-black text-white text-xs sm:text-sm py-2">
         <div className="container mx-auto px-4 flex flex-wrap justify-between items-center gap-1 sm:gap-2">
           <div className="flex items-center gap-2 sm:gap-4">
