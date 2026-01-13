@@ -16,17 +16,17 @@ const provinceDropdown = [
 ]
 
 const municipalitiesNav = [
-  { name: 'Bongao', href: '/bongao' },
-  { name: 'Mapun', href: '/mapun' },
-  { name: 'Sibutu', href: '/sibutu' },
-  { name: 'Sitangkai', href: '/sitangkai' },
-  { name: 'Simunul', href: '/simunul' },
-  { name: 'Languyan', href: '/languyan' },
-  { name: 'Panglima Sugala', href: '/panglima-sugala' },
-  { name: 'Sapa-Sapa', href: '/sapa-sapa' },
-  { name: 'South Ubian', href: '/south-ubian' },
-  { name: 'Tandubas', href: '/tandubas' },
-  { name: 'Turtle Island', href: '/turtle-island' },
+  { name: 'Bongao', href: '/municipalities/bongao' },
+  { name: 'Mapun', href: '/municipalities/mapun' },
+  { name: 'Sibutu', href: '/municipalities/sibutu' },
+  { name: 'Sitangkai', href: '/municipalities/sitangkai' },
+  { name: 'Simunul', href: '/municipalities/simunul' },
+  { name: 'Languyan', href: '/municipalities/languyan' },
+  { name: 'Panglima Sugala', href: '/municipalities/panglima-sugala' },
+  { name: 'Sapa-Sapa', href: '/municipalities/sapa-sapa' },
+  { name: 'South Ubian', href: '/municipalities/south-ubian' },
+  { name: 'Tandubas', href: '/municipalities/tandubas' },
+  { name: 'Turtle Island', href: '/municipalities/turtle-island' },
 ]
 
 export function PublicHeader() {
